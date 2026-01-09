@@ -1,15 +1,23 @@
 "use client";
 
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
+import { DisplaySettings } from "./DisplaySettings";
+
 export function Toolbar() {
   return (
     <div className="grayscale-[30%] hover:grayscale-0 transition-[filter] relative flex flex-row w-full h-[28px] gap-[8px] px-[16px] pb-[1px] overflow-hidden border-b border-primaryStroke sm:border-primaryStroke/50">
       {/* Settings button */}
       <div className="flex flex-row h-full items-center z-20 gap-[8px]">
-        <span className="contents">
-          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]" suppressHydrationWarning={true}>
-            <i className="ri-settings-3-line text-[14px]"></i>
-          </button>
-        </span>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]" suppressHydrationWarning={true}>
+              <i className="ri-settings-3-line text-[14px]"></i>
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-[344px] p-0">
+            <DisplaySettings />
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Divider */}
