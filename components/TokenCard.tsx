@@ -1,5 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/Tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
+import { Modal, ModalContent, ModalDescription, ModalHeader, ModalTitle, ModalTrigger } from "./ui/Modal";
+
 export interface TokenData {
   id: string;
   name: string;
@@ -15,6 +20,7 @@ export interface TokenData {
   holders?: number;
   comments?: number;
   bondingCurve?: string;
+  lastUpdated?: number;
   devSold?: boolean;
   devSoldPercent?: string;
   stats: {
@@ -35,9 +41,12 @@ export interface TokenData {
 interface TokenCardProps {
   token: TokenData;
   variant?: "new" | "final" | "migrated";
+  flashState?: 'increase' | 'decrease' | null;
 }
 
-export function TokenCard({ token, variant = "new" }: TokenCardProps) {
+export function TokenCard({ token, variant = "new", flashState = null }: TokenCardProps) {
+  const [chefPopoverOpen, setChefPopoverOpen] = useState(false);
+  
   const getVariantColor = () => {
     switch (variant) {
       case "final":
@@ -72,7 +81,8 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
   };
 
   return (
-    <div className="border-primaryStroke/50 border-b-[1px] flex flex-col w-full justify-start items-center cursor-pointer relative overflow-hidden hover:bg-primaryStroke/50 group h-[142px] min-h-[142px] sm:h-[116px] sm:min-h-[116px] md:h-[142px] md:min-h-[142px] lg:h-[142px] lg:min-h-[142px] xl:h-[116px] xl:min-h-[116px]">
+    <TooltipProvider>
+    <div className="border-primaryStroke/50 border-b-[1px] flex flex-col w-full justify-start items-center relative overflow-hidden hover:bg-primaryStroke/50 group h-[142px] min-h-[142px] sm:h-[116px] sm:min-h-[116px] md:h-[142px] md:min-h-[142px] lg:h-[142px] lg:min-h-[142px] xl:h-[116px] xl:min-h-[116px]">
       {/* Right side stats section */}
       <div className="absolute right-[16px] top-[16px] z-10 block">
         <div className="flex flex-col gap-[2px] items-end">
@@ -80,13 +90,19 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
           <div className="relative">
             <div className="absolute z-0" style={{ inset: '-12px -8px 1px -4px' }}>
               <div className="group-hover:bg-primaryStroke/50 absolute inset-0 z-10"></div>
-              <div className="bg-backgroundSecondary absolute inset-0 z-0"></div>
+              <div className="absolute inset-0 z-0" style={{ backgroundColor: '#101114' }}></div>
             </div>
-            <div className="relative flex flex-row gap-[8px] justify-end items-end z-20">
+            <div className={`relative flex flex-row gap-[8px] justify-end items-end z-20 ${
+              flashState ? `price-flash-${flashState}` : ''
+            }`}>
               <span className="contents">
                 <div className="flex flex-row h-[18px] gap-[4px] justify-end items-end">
                   <span className="text-textTertiary text-[12px] font-medium pb-[1.6px]">MC</span>
-                  <span className={`text-[16px] font-medium ${getVariantColor()}`}>{token.marketCap}</span>
+                  <span className={`text-[16px] font-medium price-transition ${
+                    flashState === 'increase' ? 'text-increase' : 
+                    flashState === 'decrease' ? 'text-decrease' : 
+                    getVariantColor()
+                  }`}>{token.marketCap}</span>
                 </div>
               </span>
             </div>
@@ -96,13 +112,19 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
           <div className="relative">
             <div className="absolute z-0" style={{ inset: '-12px -8px 1px -4px' }}>
               <div className="group-hover:bg-primaryStroke/50 absolute inset-0 z-10"></div>
-              <div className="bg-backgroundSecondary absolute inset-0 z-0"></div>
+              <div className="absolute inset-0 z-0" style={{ backgroundColor: '#101114' }}></div>
             </div>
-            <div className="relative flex flex-row gap-[8px] justify-start items-start z-20">
+            <div className={`relative flex flex-row gap-[8px] justify-start items-start z-20 ${
+              flashState ? `price-flash-${flashState}` : ''
+            }`}>
               <span className="contents">
                 <div className="flex flex-row h-[18px] flex-1 gap-[4px] justify-end items-end">
                   <span className="text-textTertiary text-[12px] font-medium pb-[1.6px] flex justify-center items-center">V</span>
-                  <span className="text-[16px] font-medium text-textPrimary">{token.volume}</span>
+                  <span className={`text-[16px] font-medium price-transition ${
+                    flashState === 'increase' ? 'text-increase' : 
+                    flashState === 'decrease' ? 'text-decrease' : 
+                    'text-textPrimary'
+                  }`}>{token.volume}</span>
                 </div>
               </span>
             </div>
@@ -112,7 +134,7 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
           <div className="relative flex flex-row gap-[8px] justify-start items-start -mt-[2px]">
             <div className="absolute z-0" style={{ inset: '-2px -8px -4px -4px' }}>
               <div className="group-hover:bg-primaryStroke/50 absolute inset-0 z-[5]"></div>
-              <div className="bg-backgroundSecondary absolute inset-0 z-0"></div>
+              <div className="absolute inset-0 z-0" style={{ backgroundColor: '#101114' }}></div>
             </div>
             <span className="contents">
               <div className="relative flex flex-row justify-end items-center h-[12px] gap-[4px] flex-shrink-0 group/image text-nowrap z-20">
@@ -126,12 +148,97 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
             <span className="contents">
               <div className="relative flex flex-row justify-end items-center h-[12px] gap-[4px] flex-shrink-0 group/image text-nowrap z-20">
                 <span className="text-textTertiary text-[11px] font-medium">TX <span className="text-textPrimary text-[11px] font-medium">{token.txCount}</span></span>
-                <div className="flex flex-row flex-1 min-w-[24px] max-w-[24px] h-[2px] bg-secondaryStroke rounded-full overflow-hidden">
-                  <div className="h-[3px] bg-increase" style={{ width: '95%' }}></div>
-                  <div className="h-[3px] bg-decrease" style={{ width: '5%' }}></div>
+                <div className="relative flex-1 min-w-[24px] max-w-[24px] h-[3px] bg-secondaryStroke rounded-full overflow-hidden z-20">
+                  <div className="absolute left-0 top-0 h-full bg-increase z-10" style={{ width: '95%' }}></div>
+                  <div className="absolute right-0 top-0 h-full bg-decrease z-10" style={{ width: '5%' }}></div>
                 </div>
               </div>
             </span>
+          </div>
+          
+          {/* Buy button */}
+          <div className="relative mt-[8px] flex gap-2">
+            <button
+              type="button"
+              className="flex flex-row gap-[4px] justify-center items-center rounded-[999px] h-[24px] whitespace-nowrap transition-all duration-0 relative overflow-hidden group/quickBuyButton"
+              style={{ paddingLeft: 6, paddingRight: 6, backgroundColor: '#6683FF' }}
+            >
+              <i className="ri-flashlight-fill text-[16px] flex items-center relative z-10 text-black"></i>
+              <span className="text-[12px] font-bold relative z-10 text-black">0 SOL</span>
+            </button>
+            
+            <Modal>
+              <ModalTrigger asChild>
+                <button className="flex items-center justify-center w-[24px] h-[24px] rounded-full bg-primaryStroke hover:bg-secondaryStroke transition-colors">
+                  <i className="ri-information-line text-[14px] text-textSecondary"></i>
+                </button>
+              </ModalTrigger>
+              <ModalContent className="max-w-2xl">
+                <ModalHeader>
+                  <ModalTitle>{token.name} ({token.ticker})</ModalTitle>
+                  <ModalDescription>Complete token information and trading data</ModalDescription>
+                </ModalHeader>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 p-4 bg-backgroundSecondary rounded border border-primaryStroke">
+                    <div className="w-16 h-16 rounded-full bg-primaryStroke flex items-center justify-center">
+                      {token.imageText && <span className="text-2xl">{token.imageText}</span>}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-textPrimary">{token.name}</h3>
+                      <p className="text-textSecondary">{token.ticker}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-textTertiary text-sm">Age</p>
+                      <p className="text-textPrimary font-medium">{token.age}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 bg-backgroundSecondary rounded border border-primaryStroke">
+                      <p className="text-textTertiary text-xs mb-1">Market Cap</p>
+                      <p className="text-textPrimary text-lg font-bold">{token.marketCap}</p>
+                    </div>
+                    <div className="p-3 bg-backgroundSecondary rounded border border-primaryStroke">
+                      <p className="text-textTertiary text-xs mb-1">Volume 24h</p>
+                      <p className="text-textPrimary text-lg font-bold">{token.volume}</p>
+                    </div>
+                    <div className="p-3 bg-backgroundSecondary rounded border border-primaryStroke">
+                      <p className="text-textTertiary text-xs mb-1">Floor Price</p>
+                      <p className="text-textPrimary text-lg font-bold">{token.floor} SOL</p>
+                    </div>
+                    <div className="p-3 bg-backgroundSecondary rounded border border-primaryStroke">
+                      <p className="text-textTertiary text-xs mb-1">Transactions</p>
+                      <p className="text-textPrimary text-lg font-bold">{token.txCount}</p>
+                    </div>
+                  </div>
+
+                  {token.progress && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-textTertiary">Bonding Curve Progress</span>
+                        <span className="text-textPrimary font-medium">{token.progress}%</span>
+                      </div>
+                      <div className="h-2 bg-secondaryStroke rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-primaryBlue transition-all duration-300"
+                          style={{ width: `${token.progress}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3 pt-2">
+                    <button className="flex-1 px-4 py-2.5 bg-increase hover:bg-increaseHover rounded text-white font-medium transition-colors">
+                      Buy Token
+                    </button>
+                    <button className="flex-1 px-4 py-2.5 bg-primaryStroke hover:bg-secondaryStroke rounded text-textPrimary font-medium transition-colors">
+                      Add to Watchlist
+                    </button>
+                  </div>
+                </div>
+              </ModalContent>
+            </Modal>
           </div>
         </div>
       </div>
@@ -151,18 +258,18 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
             
             {/* Image container with border */}
             <div className={`${getBorderColor()} absolute flex p-[1px] justify-start items-center rounded-[4px] z-20`}>
-              <div className="bg-backgroundSecondary flex p-[2px] justify-start items-center rounded-[3px]">
+              <div className="flex p-[2px] justify-start items-center rounded-[3px]" style={{ backgroundColor: '#101114' }}>
                 <div className="w-[68px] h-[68px] flex-shrink-0 group/image relative">
                   <div className="w-full h-full relative">
                     <div className="pointer-events-none border-textPrimary/10 border-[1px] absolute w-[68px] h-[68px] z-10 rounded-[1px]"></div>
                     {token.image ? (
                       <img alt={token.name} loading="eager" width="68" height="68" className="rounded-[1px] w-[68px] h-[68px] object-cover" src={token.image} style={{ objectFit: 'cover' }} />
                     ) : (
-                      <div className="w-[68px] h-[68px] rounded-[1px] flex items-center justify-center text-textSecondary text-[24px] font-semibold bg-backgroundSecondary">
+                      <div className="w-[68px] h-[68px] rounded-[1px] flex items-center justify-center text-textSecondary text-[24px] font-semibold" style={{ backgroundColor: '#101114' }}>
                         {token.imageText || token.ticker.charAt(0)}
                       </div>
                     )}
-                    <button className="absolute inset-0 bg-black/50 opacity-0 group-hover/image:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                    <button className="absolute inset-0 opacity-0 group-hover/image:opacity-100 transition-opacity duration-200 flex items-center justify-center" style={{ backgroundColor: 'rgba(82, 111, 255, 0.5)' }} suppressHydrationWarning={true}>
                       <i className="ri-camera-line text-white text-[24px]"></i>
                     </button>
                   </div>
@@ -184,7 +291,7 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
           {/* Address */}
           <span className="contents">
             <span className="text-textTertiary text-[12px] font-medium text-center max-w-[74px]">
-              <button type="button" className="text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] text-[12px] font-medium text-center max-w-[74px] flex items-center gap-[4px] group/copy">
+              <button type="button" className="text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] text-[12px] font-medium text-center max-w-[74px] flex items-center gap-[4px] group/copy" suppressHydrationWarning={true}>
                 <span>{token.id.slice(0, 4)}...{token.id.slice(-4)}</span>
               </button>
             </span>
@@ -197,14 +304,14 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
           <div className="flex flex-col w-full gap-[2px] justify-start items-start min-w-0">
             <div className="flex flex-row min-h-[18px] w-full gap-[4px] justify-between items-start min-w-0">
               <div className="overflow-hidden">
-                <div className="justify-start items-start" style={{ minWidth: '120px' }}>
+                <div className="justify-start items-start" style={{ minWidth: '143px' }}>
                   <div className="flex flex-row gap-[4px] justify-start items-center">
-                    <div className="min-w-0 whitespace-nowrap overflow-hidden truncate text-textPrimary text-[16px] font-medium tracking-[-0.02em]" style={{ maxWidth: 'calc(120px)' }}>
+                    <div className="min-w-0 whitespace-nowrap overflow-hidden truncate text-textPrimary text-[16px] font-medium tracking-[-0.02em] truncate" style={{ maxWidth: 'calc(120px)' }}>
                       {token.ticker}
                     </div>
                     <div className="min-w-0 flex-1 overflow-hidden">
                       <span className="contents">
-                        <button type="button" className="flex flex-row gap-[4px] justify-start items-center text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] min-w-0 overflow-hidden">
+                        <button type="button" className="flex flex-row gap-[4px] justify-start items-center text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] min-w-0 overflow-hidden" suppressHydrationWarning={true}>
                           <div className="min-w-0 whitespace-nowrap overflow-hidden truncate text-inherit text-[16px] sm:text-[16px] lg:text-[14px] xl:text-[16px] text-left font-medium tracking-[-0.02em] xl:truncate xl:max-w-full block">
                             {token.name}
                           </div>
@@ -222,25 +329,74 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
               <div className="flex items-center gap-[8px]">
                 <span className={`${getVariantColor()} text-[14px] font-medium`}>{token.age}</span>
               </div>
-              
-              {/* Social icons */}
               <div className="flex flex-row flex-shrink-0 gap-[8px] justify-start items-center [&_i]:text-[16px]">
-                <div className="flex flex-row gap-[4px] justify-start items-center">
-                  <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center">
-                    <i className="icon-pill text-textSecondary hover:text-primaryBlueHover transition-colors duration-[125ms]" style={{ fontSize: '16px' }}></i>
-                  </a>
-                </div>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center">
-                  <i className="text-textSecondary ri-search-line text-[16px] hover:text-primaryBlueHover transition-colors duration-[125ms]"></i>
-                </a>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a href={`https://x.com/search?q=${token.id}`} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                      <i className="ri-twitter-x-line text-textSecondary hover:text-primaryBlueHover transition-colors duration-[125ms]" style={{ fontSize: '16px' }}></i>
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Search on X (Twitter)</p></TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <a href={`https://pump.fun/coin/${token.id}`} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        <i className="text-textSecondary ri-global-line text-[16px] hover:text-primaryBlueHover transition-colors duration-[125ms]"></i>
+                      </a>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent><p>View on Pump.fun</p></TooltipContent>
+                </Tooltip>
+                
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex flex-row gap-[4px] justify-start items-center">
+                      <a href={`https://pump.fun/coin/${token.id}`} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        <i className="icon-pill text-textSecondary hover:text-primaryBlueHover transition-colors duration-[125ms]" style={{ fontSize: '16px' }}></i>
+                      </a>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Token Contract</p></TooltipContent>
+                </Tooltip>
+                
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="flex items-center">
+                      <i className="text-textSecondary ri-search-line text-[16px] hover:text-primaryBlueHover transition-colors duration-[125ms]"></i>
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-64">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-sm text-textPrimary">Quick Stats</h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-textTertiary">Volume</span>
+                          <span className="text-textPrimary font-medium">{token.volume}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-textTertiary">Floor</span>
+                          <span className="text-textPrimary font-medium">{token.floor} SOL</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-textTertiary">Holders</span>
+                          <span className="text-textPrimary font-medium">{token.holders || 0}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-textTertiary">Transactions</span>
+                          <span className="text-textPrimary font-medium">{token.txCount}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
-
-              {/* Stats icons - hidden on some breakpoints */}
               <div className="flex-row flex-1 h-[18px] gap-[8px] justify-start items-center hidden sm:flex md:hidden lg:hidden xl:flex">
                 <span className="contents">
                   <div className="flex flex-row gap-[2px] h-[16px] justify-start items-center">
                     <i className="text-textTertiary ri-group-line text-[16px]"></i>
-                    <span className="text-[12px] font-medium text-textPrimary">{token.holders || 0}</span>
+                    <span className="text-[12px] font-medium text-textPrimary">{token.holders || 7}</span>
                   </div>
                 </span>
                 <span className="contents">
@@ -260,60 +416,141 @@ export function TokenCard({ token, variant = "new" }: TokenCardProps) {
                 <span className="contents">
                   <div className="flex flex-row gap-[2px] h-[16px] justify-start items-center cursor-pointer">
                     <i className="text-textTertiary ri-vip-crown-2-line text-[16px] pb-[1.2px]"></i>
-                    <span className="text-textPrimary text-[12px] font-medium">0/{token.holders || 0}</span>
+                    <span className="text-textPrimary text-[12px] font-medium">0/1</span>
                   </div>
                 </span>
                 <span className="contents">
                   <div className="inline-flex items-center justify-center gap-1 text-textSecondary leading-none">
                     <i className="ri-eye-line text-[9px] sm:text-[16px] flex items-center"></i>
-                    <span className="text-[11px] sm:text-[11px] font-medium flex items-center">{token.comments || 0}</span>
+                    <span className="text-[11px] sm:text-[11px] font-medium flex items-center">{token.comments || 5}</span>
                   </div>
                 </span>
               </div>
             </div>
-
-            {/* Badges row - hidden on some breakpoints */}
-            <div className="hidden sm:flex md:hidden lg:hidden xl:flex flex-row w-full h-[24px] gap-[4px] justify-start items-end">
-              <div>
-                <div className="flex flex-row gap-[4px] flex-shrink-0 h-[24px] px-[5px] justify-start items-center rounded-full bg-backgroundSecondary border-primaryStroke/50 border-[1px]">
-                  <i className="ri-user-star-line text-[14px] text-primaryGreen"></i>
-                  <span className="text-primaryGreen text-[12px] font-medium">0%</span>
-                </div>
+            <div className="flex sm:hidden md:flex lg:flex xl:hidden flex-row flex-1 h-[18px] gap-[8px] justify-start items-center pt-[3px]">
+              <div className="flex flex-row gap-[2px] h-[16px] justify-start items-center">
+                <i className="text-textTertiary ri-group-line text-[16px]"></i>
+                <span className="text-[12px] font-medium text-textPrimary">{token.holders || 7}</span>
+              </div>
+              <div className="flex flex-row gap-[2px] h-[16px] justify-center items-center flex-shrink-0">
+                <img alt="Pro Traders" loading="eager" width="16" height="16" decoding="async" data-nimg="1" className="w-[16px] h-[16px]" src="https://axiom.trade/images/material-symbols-candlestick-chart.svg?dpl=dpl_5G4ryX3zuK1ww4wDVa4KiL6hZ3yn" style={{ color: 'transparent', objectFit: 'cover' }} />
+                <span className="text-textPrimary text-[12px] font-medium">0</span>
               </div>
               <span className="contents">
-                <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] pl-[5px] pr-[4px] justify-start items-center rounded-full bg-backgroundSecondary border-primaryStroke/50 border-[1px]">
-                  <div className="w-[16px] h-[16px] flex items-center justify-center">
-                    <i className="icon-chef-hat text-primaryGreen" style={{ fontSize: '12px' }}></i>
-                  </div>
-                  <span className="text-primaryGreen text-[12px] font-medium">0%</span>
-                  <img alt="Coinbase" loading="eager" width="12" height="12" className="w-[12px] object-cover rounded-full" src="/images/funding-logos/coinbase.webp" />
-                  <span className="text-textSecondary text-[11px] leading-[16px] font-medium whitespace-nowrap">53m</span>
+                <div className="flex flex-row gap-[2px] h-[16px] justify-center items-center flex-shrink-0">
+                  <i className="ri-trophy-line text-textTertiary text-[16px]"></i>
+                  <span className="text-textPrimary text-[12px] font-medium">0</span>
                 </div>
               </span>
               <span className="contents">
-                <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full bg-backgroundSecondary border-primaryStroke/50 border-[1px]">
-                  <i className="ri-crosshair-2-line text-[14px] text-primaryGreen"></i>
-                  <span className="text-primaryGreen text-[12px] font-medium">0%</span>
+                <div className="flex flex-row gap-[2px] h-[16px] justify-start items-center cursor-pointer">
+                  <i className="text-textTertiary ri-vip-crown-2-line text-[16px] pb-[1.2px]"></i>
+                  <span className="text-textPrimary text-[12px] font-medium">0/1</span>
                 </div>
               </span>
               <span className="contents">
-                <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full bg-backgroundSecondary border-primaryStroke/50 border-[1px]">
-                  <i className="ri-ghost-line text-[14px] text-primaryGreen"></i>
-                  <span className="text-primaryGreen text-[12px] font-medium">0%</span>
-                </div>
-              </span>
-              <span className="contents">
-                <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full bg-backgroundSecondary border-primaryStroke/50 border-[1px]">
-                  <div className="flex justify-center items-center min-w-[14px] min-h-[14px] max-w-[14px] max-h-[14px]">
-                    <i className="icon-boxes text-[14px] text-primaryGreen" style={{ fontSize: '12px' }}></i>
-                  </div>
-                  <span className="text-primaryGreen text-[12px] font-medium">0%</span>
+                <div className="inline-flex items-center justify-center gap-1 text-textSecondary leading-none">
+                  <i className="ri-eye-line text-[9px] sm:text-[16px] flex items-center"></i>
+                  <span className="text-[11px] sm:text-[11px] font-medium flex items-center">{token.comments || 5}</span>
                 </div>
               </span>
             </div>
           </div>
+          <div className="hidden sm:flex md:hidden lg:hidden xl:flex flex-row w-full h-[24px] gap-[4px] justify-start items-end">
+            <div>
+              <div className="flex flex-row gap-[4px] flex-shrink-0 h-[24px] px-[5px] justify-start items-center rounded-full border-[1px]" style={{ backgroundColor: '#101114', borderColor: 'rgba(18, 175, 128, 0.4)' }}>
+                <i className="ri-user-star-line text-[14px]" style={{ color: '#12AF80' }}></i>
+                <span className="text-[12px] font-medium" style={{ color: '#12AF80' }}>6%</span>
+            <Popover open={chefPopoverOpen} onOpenChange={setChefPopoverOpen}>
+              <PopoverTrigger asChild>
+                <div 
+                  className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer hover:bg-primaryStroke/30 transition-colors" 
+                  style={{ backgroundColor: '#101114', borderColor: 'rgba(18, 175, 128, 0.4)' }}
+                  onMouseEnter={() => setChefPopoverOpen(true)}
+                  onMouseLeave={() => setChefPopoverOpen(false)}
+                >
+                  <div className="w-[16px] h-[16px] flex items-center justify-center">
+                    <i className="ri-restaurant-2-fill text-[12px]" style={{ color: '#12AF80' }}></i>
+                  </div>
+                  <span className="text-[12px] font-medium" style={{ color: '#12AF80' }}>4%</span>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent 
+                className="w-[280px] p-0 z-[100] rounded-lg shadow-xl" 
+                sideOffset={8}
+                onMouseEnter={() => setChefPopoverOpen(true)}
+                onMouseLeave={() => setChefPopoverOpen(false)}
+                style={{ backgroundColor: '#101114', borderColor: 'rgb(34, 36, 45)' }}
+              >
+                <div className="flex flex-col w-full h-full gap-[8px] justify-start items-center p-[8px] pb-[10px]">
+                  <div className="flex flex-row justify-between w-full items-center gap-[4px]">
+                    <button className="group flex flex-row gap-[2px] justify-start items-center hover:bg-secondaryStroke/40 px-[4px] py-[2px] rounded-[4px] transition-all duration-150 ease-in-out flex-shrink-0">
+                      <span className="text-textTertiary group-hover:text-textSecondary text-[12px] leading-[16px] font-normal transition-all duration-150">Aae8FpM1Z5bD...5KNn</span>
+                      <i className="ri-file-copy-line text-[12px] text-textTertiary group-hover:text-textSecondary transition-all duration-150"></i>
+                    </button>
+                  </div>
+                  <div className="flex flex-row w-full gap-[8px]">
+                    <div className="flex-1 border border-secondaryStroke/30 pt-[6px] pb-[7px] px-[8px] flex flex-col w-full justify-start items-center rounded-[4px] gap-[4px]">
+                      <div className="flex flex-row h-[18px] gap-[4px] flex-1 justify-start items-center">
+                        <i className="ri-wallet-line text-[14px] text-textSecondary"></i>
+                        <div className="flex flex-row items-center gap-[2px]">
+                          <img alt="SOL" loading="eager" width="14" height="14" className="w-[14px] h-[14px]" src="/images/sol-fill.svg" />
+                          <span className="text-[14px] leading-[16px] font-normal text-textPrimary">753.1</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-row flex-1 justify-start items-center">
+                        <span className="text-textTertiary text-[12px] leading-[16px] font-normal">$102K</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 border border-secondaryStroke/30 pt-[6px] pb-[7px] px-[8px] flex flex-col w-full justify-start items-center rounded-[4px] gap-[4px]">
+                      <div className="flex flex-row h-[18px] gap-[4px] flex-1 justify-start items-center">
+                        <i className="ri-time-line text-[14px] text-textSecondary"></i>
+                        <span className="text-[14px] leading-[16px] font-normal text-textPrimary cursor-default">2h</span>
+                      </div>
+                      <div className="flex flex-row flex-1 justify-start items-center">
+                        <span className="text-textTertiary text-[12px] leading-[16px] font-normal">Funded</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full min-h-[1px] max-h-[1px] bg-secondaryStroke/50"></div>
+                  <div className="flex flex-row justify-between w-full gap-[8px]">
+                    <a href="https://solscan.io/tx/2oDc8QSQm6WivpWdBe26LxfV7xKjS5J3qp7cTpREehoqQBEzmvoGCjiUYTRTtthkRDPaZppCPTobrwceTA9XDH4W" target="_blank" rel="noopener noreferrer" className="group flex flex-row p-[4px] w-[24px] h-[24px] justify-center items-center hover:bg-secondaryStroke/40 cursor-pointer rounded-[4px] transition-all duration-150 ease-in-out">
+                      <i className="ri-share-box-line text-[14px] text-textSecondary group-hover:text-textPrimary transition-all duration-150"></i>
+                    </a>
+                    <a href="https://solscan.io/account/DgKaZ4Qi7rbUTWpGEfQn9dcDALDnrMYZbDFEDDqfnNwb" target="_blank" rel="noopener noreferrer" className="bg-secondaryStroke/35 hover:bg-secondaryStroke/50 flex flex-row justify-start items-center gap-[4px] pl-[4px] pr-[6px] py-[2px] rounded-full transition-all duration-150 ease-in-out cursor-pointer">
+                      <i className="ri-arrow-up-line text-[14px] text-textSecondary"></i>
+                      <span className="text-textSecondary text-[12px] leading-[16px] font-medium">DgKaZ4Qi7rbU...nNwb</span>
+                    </a>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <span className="contents">
+              <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px]" style={{ backgroundColor: '#101114', borderColor: 'rgba(18, 175, 128, 0.4)' }}>
+                <i className="ri-crosshair-2-line text-[14px]" style={{ color: '#12AF80' }}></i>
+                <span className="text-[12px] font-medium" style={{ color: '#12AF80' }}>6%</span>
+              </div>
+            </span>
+            <span className="contents">
+              <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px]" style={{ backgroundColor: '#101114', borderColor: 'rgba(18, 175, 128, 0.4)' }}>
+                <i className="ri-ghost-line text-[14px]" style={{ color: '#12AF80' }}></i>
+                <span className="text-[12px] font-medium" style={{ color: '#12AF80' }}>0%</span>
+              </div>
+            </span>
+            <span className="contents">
+              <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px]" style={{ backgroundColor: '#101114', borderColor: 'rgba(18, 175, 128, 0.4)' }}>
+                <div className="flex justify-center items-center min-w-[14px] min-h-[14px] max-w-[14px] max-h-[14px]">
+                  <i className="ri-stack-fill text-[12px]" style={{ color: '#12AF80' }}></i>
+                </div>
+                <span className="text-[12px] font-medium" style={{ color: '#12AF80' }}>6%</span>
+              </div>
+            </span>
+          </div>
         </div>
       </div>
     </div>
+    </div>
+    </div>
+    </TooltipProvider>
   );
 }

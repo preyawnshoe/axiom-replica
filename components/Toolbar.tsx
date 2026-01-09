@@ -6,7 +6,7 @@ export function Toolbar() {
       {/* Settings button */}
       <div className="flex flex-row h-full items-center z-20 gap-[8px]">
         <span className="contents">
-          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
+          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]" suppressHydrationWarning={true}>
             <i className="ri-settings-3-line text-[14px]"></i>
           </button>
         </span>
@@ -20,12 +20,12 @@ export function Toolbar() {
       {/* Star and chart buttons */}
       <div className="flex flex-row h-full items-center z-20 gap-[8px]">
         <span className="contents">
-          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textSecondary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
+          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textSecondary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]" suppressHydrationWarning={true}>
             <i className="ri-star-line text-[14px]"></i>
           </button>
         </span>
         <span className="contents">
-          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
+          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]" suppressHydrationWarning={true}>
             <i className="ri-line-chart-line text-[14px]"></i>
           </button>
         </span>

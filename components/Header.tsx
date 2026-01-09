@@ -53,7 +53,7 @@ export function Header() {
       {/* Navigation with horizontal scroll */}
       <div className="relative flex hidden sm:flex flex-1 min-w-[0px]">
         <div className="absolute right-0 top-0 w-[32px] h-full z-40 bg-gradient-to-l from-background to-transparent flex items-center justify-end pointer-events-none">
-          <button type="button" className="absolute right-0 w-6 h-6 flex items-center justify-center text-textSecondary hover:text-textPrimary transition-all duration-125 ease-in-out opacity-0">
+          <button type="button" className="absolute right-0 w-6 h-6 flex items-center justify-center text-textSecondary hover:text-textPrimary transition-all duration-125 ease-in-out opacity-0" suppressHydrationWarning={true}>
             <i className="ri-arrow-right-wide-line text-[20px] mb-[1px]"></i>
           </button>
         </div>
@@ -62,13 +62,16 @@ export function Header() {
             {navItems.map((item) => (
               <div key={item.label}>
                 <a href={item.href}>
-                  <button className={`
+                  <button
+                    className={`
                     flex flex-row h-[32px] text-nowrap px-[8px] xl:px-[14px] 
                     justify-start items-center 
                     [transition:none] duration-0
                     hover:bg-primaryBlue/20 hover:text-primaryBlue hover:[transition:background-color_135ms_ease-in-out,color_135ms_ease-in-out] rounded-[4px]
                     ${item.active ? "text-primaryBlue" : "text-textPrimary"}
-                  `}>
+                  `}
+                    suppressHydrationWarning={true}
+                  >
                     <span className="text-[14px] font-medium">{item.label}</span>
                   </button>
                 </a>
@@ -82,7 +85,7 @@ export function Header() {
       <div className="flex flex-row gap-[16px] justify-start items-center">
         <div></div>
         <div>
-          <button type="button" className="hidden sm:flex flex-shrink-0 whitespace-nowrap border-primaryStroke font-normal border-[1px] flex-row h-[32px] sm:px-[8px] md:px-[8px] lg:px-[8px] 2xl:pl-[12px] 2xl:pr-[6px] gap-[8px] justify-center items-center rounded-full hover:bg-primaryStroke/35 transition-colors duration-125 cursor-pointer">
+          <button type="button" className="hidden sm:flex flex-shrink-0 whitespace-nowrap border-primaryStroke font-normal border-[1px] flex-row h-[32px] sm:px-[8px] md:px-[8px] lg:px-[8px] 2xl:pl-[12px] 2xl:pr-[6px] gap-[8px] justify-center items-center rounded-full hover:bg-primaryStroke/35 transition-colors duration-125 cursor-pointer" suppressHydrationWarning={true}>
             <i className="pt-[0px] ri-search-2-line text-[18px] text-textPrimary"></i>
             <span className="text-[12px] text-textTertiary font-medium hidden 2xl:block">Search by token or CA...</span>
             <div className="hidden 2xl:block border-primaryStroke border-[1px] text-[12px] h-[20px] flex-row px-[8px] gap-[8px] justify-center items-center rounded-full">
@@ -94,7 +97,7 @@ export function Header() {
           <div className="hidden sm:block">
             <div className="relative flex">
               <div className="w-full">
-                <button className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" type="button" style={{ borderColor: "rgba(20, 241, 149, 0.1)" }}>
+                <button className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" type="button" style={{ borderColor: "rgba(20, 241, 149, 0.1)" }} suppressHydrationWarning={true}>
                   <Image alt="Solana" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
                   <span className="text-[14px] text-textPrimary font-medium">SOL</span>
                   <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>
@@ -107,7 +110,7 @@ export function Header() {
 
       {/* Right section - Action buttons */}
       <div className="flex items-center gap-[8px] sm:gap-[16px]">
-        <button className="hidden sm:flex h-[32px] px-[12px] flex-row justify-start items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" style={{ backgroundColor: "rgb(82, 111, 255)" }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgb(102, 131, 255)"} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "rgb(82, 111, 255)"}>
+        <button className="hidden sm:flex h-[32px] px-[12px] flex-row justify-start items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" style={{ backgroundColor: "rgb(82, 111, 255)" }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgb(102, 131, 255)"} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "rgb(82, 111, 255)"} suppressHydrationWarning={true}>
           <span className="text-nowrap text-[14px] font-bold" style={{ color: "#06070B" }}>Deposit</span>
         </button>
 
@@ -115,7 +118,7 @@ export function Header() {
         <div className="flex sm:hidden items-center gap-[8px]">
           <div className="relative flex">
             <div className="w-full">
-              <button className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" type="button" style={{ borderColor: "rgba(20, 241, 149, 0.1)" }}>
+              <button className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" type="button" style={{ borderColor: "rgba(20, 241, 149, 0.1)" }} suppressHydrationWarning={true}>
                 <Image alt="Solana" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
                 <span className="text-[14px] text-textPrimary font-medium">SOL</span>
                 <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>
@@ -124,7 +127,7 @@ export function Header() {
           </div>
           <div className="relative flex">
             <div className="w-full">
-              <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row h-[32px] px-[8px] gap-[4px] justify-center items-center rounded-full">
+              <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row h-[32px] px-[8px] gap-[4px] justify-center items-center rounded-full" suppressHydrationWarning={true}>
                 <i className="text-textPrimary ri-global-line text-[16px] sm:text-[18px]"></i>
                 <span className="text-[12px] sm:text-[14px] text-nowrap font-medium">GLOBAL</span>
                 <i className="text-textPrimary ri-arrow-down-s-line text-[16px] sm:text-[18px]"></i>
@@ -133,21 +136,21 @@ export function Header() {
           </div>
           <div className="relative flex">
             <div className="w-full">
-              <button className="relative bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] sm:w-[32px] sm:h-[32px] px-[10px] sm:px-[12px] gap-[8px] justify-center items-center rounded-full">
+              <button className="relative bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] sm:w-[32px] sm:h-[32px] px-[10px] sm:px-[12px] gap-[8px] justify-center items-center rounded-full" suppressHydrationWarning={true}>
                 <i className="text-textPrimary ri-notification-3-line text-[16px] sm:text-[18px]"></i>
               </button>
             </div>
           </div>
           <div className="relative flex">
             <div className="w-full">
-              <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] sm:w-[32px] sm:h-[32px] px-[10px] sm:px-[12px] gap-[8px] justify-center items-center rounded-full">
+              <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] sm:w-[32px] sm:h-[32px] px-[10px] sm:px-[12px] gap-[8px] justify-center items-center rounded-full" suppressHydrationWarning={true}>
                 <i className="text-textPrimary ri-wallet-line text-[16px] sm:text-[18px]"></i>
               </button>
             </div>
           </div>
           <div className="relative flex">
             <div className="w-full">
-              <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] sm:w-[32px] sm:h-[32px] px-[10px] sm:px-[12px] gap-[8px] justify-center items-center rounded-full">
+              <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] sm:w-[32px] sm:h-[32px] px-[10px] sm:px-[12px] gap-[8px] justify-center items-center rounded-full" suppressHydrationWarning={true}>
                 <i className="text-textPrimary ri-user-settings-line text-[16px] sm:text-[18px]"></i>
               </button>
             </div>
@@ -156,12 +159,12 @@ export function Header() {
 
         {/* Desktop buttons */}
         <div className="hidden sm:flex items-center gap-[8px] lg:gap-[16px]">
-          <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full">
+          <button className="bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full" suppressHydrationWarning={true}>
             <i className="text-textPrimary ri-star-line text-[18px]"></i>
           </button>
           <div className="relative flex">
             <div className="w-full">
-              <button className="relative bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full">
+              <button className="relative bg-primaryStroke hover:bg-secondaryStroke/80 flex flex-row w-[32px] h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full" suppressHydrationWarning={true}>
                 <i className="text-textPrimary ri-notification-3-line text-[18px]"></i>
               </button>
             </div>
@@ -169,7 +172,7 @@ export function Header() {
           <div className="relative flex">
             <div className="w-full">
               <div className="flex-shrink-0">
-                <button className="w-fit min-w-max bg-primaryStroke flex flex-row h-[32px] px-[12px] py-[8px] gap-[8px] justify-center items-center rounded-full hover:bg-opacity-80 transition-colors hover:bg-secondaryStroke/80">
+                <button className="w-fit min-w-max bg-primaryStroke flex flex-row h-[32px] px-[12px] py-[8px] gap-[8px] justify-center items-center rounded-full hover:bg-opacity-80 transition-colors hover:bg-secondaryStroke/80" suppressHydrationWarning={true}>
                   <i className="text-textPrimary ri-wallet-line text-[18px]"></i>
                   <div className="hidden xl:flex flex-shrink-0 whitespace-nowrap flex-row gap-[4px] justify-start items-center">
                     <Image alt="SOL" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
@@ -186,7 +189,7 @@ export function Header() {
             </div>
           </div>
           <span className="contents">
-            <button type="button" className="flex flex-row w-[28px] h-[28px] justify-center items-center rounded-full relative overflow-visible transition-all duration-150 ease-in-out active:scale-[0.96] border-transparent bg-primaryStroke hover:bg-secondaryStroke/80 hover:border-transparent">
+            <button type="button" className="flex flex-row w-[28px] h-[28px] justify-center items-center rounded-full relative overflow-visible transition-all duration-150 ease-in-out active:scale-[0.96] border-transparent bg-primaryStroke hover:bg-secondaryStroke/80 hover:border-transparent" suppressHydrationWarning={true}>
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <div className="absolute inset-0 w-full h-full border-white/[0.1] border-[1px] z-[15] pointer-events-none rounded-full"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-green-500 flex items-center justify-center">
@@ -200,7 +203,7 @@ export function Header() {
           </span>
           <div className="relative flex">
             <div className="w-full">
-              <button className="bg-primaryStroke flex flex-row w-[32px] h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full hover:bg-secondaryStroke/80">
+              <button className="bg-primaryStroke flex flex-row w-[32px] h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full hover:bg-secondaryStroke/80" suppressHydrationWarning={true}>
                 <i className="text-textPrimary ri-user-settings-line text-[18px]"></i>
               </button>
             </div>

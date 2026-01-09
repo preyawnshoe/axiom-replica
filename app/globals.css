@@ -104,4 +104,58 @@ body {
   .glow-green {
     box-shadow: 0 0 20px rgba(18, 175, 128, 0.3);
   }
+
+  /* Price flash animations */
+  @keyframes flash-increase {
+    0% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: rgba(47, 227, 172, 0.2);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
+  @keyframes flash-decrease {
+    0% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: rgba(236, 57, 122, 0.2);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
+  .price-flash-increase {
+    animation: flash-increase 1s ease-in-out;
+  }
+
+  .price-flash-decrease {
+    animation: flash-decrease 1s ease-in-out;
+  }
+
+  .price-transition {
+    transition: color 0.3s ease-in-out;
+  }
+
+  /* Force icon color for custom icon fonts */
+  .icon-green,
+  .icon-green::before {
+    color: #12AF80 !important;
+  }
+
+  /* Specific icon color overrides */
+  .icon-chef-hat,
+  .icon-chef-hat::before {
+    color: #12AF80 !important;
+  }
+
+  .icon-boxes,
+  .icon-boxes::before {
+    color: #12AF80 !important;
+  }
 }
