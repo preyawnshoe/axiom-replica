@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary Colors */
+  --primary-color: 82 111 255;
+  --primary-hue: 230;
+  --primary-color-hover: 102 131 255;
+  
+  /* Background Colors */
+  --background: #06070B;
+  --background-secondary: 16 17 20;
+  --background-tertiary: 24 24 26;
+  
+  /* Border/Stroke Colors */
+  --primary-stroke: 34 36 45;
+  --secondary-stroke: 50 53 66;
+  --border-subtle: 31 31 35;
+  
+  /* Text Colors */
+  --text-primary: 252 252 252;
+  --text-secondary: 200 201 209;
+  --text-tertiary: 119 122 140;
+  --translation-text-color: 242 195 102;
+  
+  /* Increase/Decrease Colors */
+  --increase: 47 227 172;
+  --decrease: 236 57 122;
+  --increase-hover: 91 231 189;
+  --decrease-hover: 248 100 154;
+  
+  /* Chart Colors */
+  --chart-up: 11 153 129;
+  --chart-down: 242 53 70;
+  
+  /* Semantic Brand Colors */
+  --primary-green: 18 175 128;
+  --primary-yellow: 220 193 60;
+  --primary-orange: 226 124 77;
+  --primary-orange-hover: 238 146 103;
+  --primary-red: 242 84 97;
+  --primary-light-blue: 82 197 255;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--text-primary));
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--primary-stroke)) rgb(var(--background-secondary));
+}
+
+/* Webkit scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--background-secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--primary-stroke));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--secondary-stroke));
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, rgb(var(--primary-color)), rgb(var(--primary-light-blue)));
+  }
+  
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(82, 111, 255, 0.3);
+  }
+  
+  .glow-green {
+    box-shadow: 0 0 20px rgba(18, 175, 128, 0.3);
+  }
 }
