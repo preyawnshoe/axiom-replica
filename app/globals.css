@@ -48,10 +48,19 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  background: var(--background);
+}
+
 body {
   background: var(--background);
   color: rgb(var(--text-primary));
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Default border color across the app */
+*, *::before, *::after {
+  border-color: rgb(var(--primary-stroke)) !important;
 }
 
 /* Custom scrollbar */

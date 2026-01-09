@@ -15,7 +15,10 @@ const navItems = [
 
 export function Header() {
   return (
-    <div className="border-b border-primaryStroke overflow-hidden flex flex-row w-full h-[52px] sm:h-[64px] min-h-[48px] sm:min-h-[64px] px-[16px] sm:px-[16px] lg:px-[24px] gap-[16px] sm:gap-[16px] lg:gap-[24px] justify-between sm:justify-start items-center">
+    <div
+      className="border-b-[1px] border-primaryStroke overflow-hidden flex flex-row w-full h-[52px] sm:h-[64px] min-h-[48px] sm:min-h-[64px] px-[16px] sm:px-[16px] lg:px-[24px] gap-[16px] sm:gap-[16px] lg:gap-[24px] justify-between sm:justify-start items-center"
+      style={{ borderColor: "rgb(var(--primary-stroke))" }}
+    >
       {/* Logo */}
       <div className="flex flex-row flex-shrink-0 gap-[0px] justify-start items-center w-[36px] sm:w-[24px] 2xl:w-[130px]">
         <a href="/?chain=sol">
@@ -104,8 +107,8 @@ export function Header() {
 
       {/* Right section - Action buttons */}
       <div className="flex items-center gap-[8px] sm:gap-[16px]">
-        <button className="hidden sm:flex bg-primaryBlue h-[32px] px-[12px] flex-row justify-start items-center rounded-full hover:bg-primaryBlueHover">
-          <span className="text-nowrap text-background text-[14px] font-bold">Deposit</span>
+        <button className="hidden sm:flex h-[32px] px-[12px] flex-row justify-start items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" style={{ backgroundColor: "rgb(82, 111, 255)" }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgb(102, 131, 255)"} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "rgb(82, 111, 255)"}>
+          <span className="text-nowrap text-[14px] font-bold" style={{ color: "#06070B" }}>Deposit</span>
         </button>
 
         {/* Mobile buttons */}

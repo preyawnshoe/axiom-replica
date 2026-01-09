@@ -2,28 +2,44 @@
 
 export function Toolbar() {
   return (
-    <div className="flex flex-row w-full h-[28px] gap-[8px] px-[16px] lg:px-[24px] border-b border-primaryStroke/50 items-center">
-      {/* Settings */}
-      <button className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors rounded-[4px]">
-        <i className="ri-settings-3-line text-[14px]"></i>
-      </button>
+    <div className="grayscale-[30%] hover:grayscale-0 transition-[filter] relative flex flex-row w-full h-[28px] gap-[8px] px-[16px] pb-[1px] overflow-hidden border-b border-primaryStroke sm:border-primaryStroke/50">
+      {/* Settings button */}
+      <div className="flex flex-row h-full items-center z-20 gap-[8px]">
+        <span className="contents">
+          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
+            <i className="ri-settings-3-line text-[14px]"></i>
+          </button>
+        </span>
+      </div>
 
-      <div className="w-[1px] h-[16px] bg-primaryStroke"></div>
+      {/* Divider */}
+      <div className="flex flex-row h-full items-center z-20 gap-[8px]">
+        <div className="w-[1px] h-[16px] bg-primaryStroke"></div>
+      </div>
 
-      {/* Star and chart */}
-      <button className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textSecondary hover:bg-primaryStroke/60 transition-colors rounded-[4px]">
-        <i className="ri-star-line text-[14px]"></i>
-      </button>
-      <button className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors rounded-[4px]">
-        <i className="ri-line-chart-line text-[14px]"></i>
-      </button>
+      {/* Star and chart buttons */}
+      <div className="flex flex-row h-full items-center z-20 gap-[8px]">
+        <span className="contents">
+          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textSecondary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
+            <i className="ri-star-line text-[14px]"></i>
+          </button>
+        </span>
+        <span className="contents">
+          <button type="button" className="min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
+            <i className="ri-line-chart-line text-[14px]"></i>
+          </button>
+        </span>
+      </div>
 
-      <div className="w-[1px] h-[16px] bg-primaryStroke"></div>
+      {/* Divider */}
+      <div className="flex flex-row h-full items-center z-20 gap-[8px]">
+        <div className="w-[1px] h-[16px] bg-primaryStroke"></div>
+      </div>
 
-      {/* Ticker scroll area */}
-      <div className="flex-1 overflow-hidden">
-        <div className="flex gap-[8px] items-center overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {/* Ticker items would go here */}
+      {/* Ticker scroll container */}
+      <div className="flex flex-row justify-start items-center flex-1 overflow-hidden show-bins-container duration-150 ease-in-out">
+        <div className="h-full flex flex-row gap-[1px] pt-[1px] items-center overflow-x-auto ticker-scroll-container [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] animate-ticker">
+          <div style={{ width: "0px", height: "100%", position: "relative", display: "flex" }}></div>
         </div>
       </div>
     </div>

@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      borderColor: {
+        DEFAULT: "rgb(var(--primary-stroke) / <alpha-value>)",
+      },
       colors: {
         // Primary Brand Colors
         primaryBlue: "rgb(var(--primary-color) / <alpha-value>)",
@@ -52,6 +55,10 @@ const config: Config = {
         bags: "rgb(62 154 0 / <alpha-value>)",
         aster: "#f9d3a8",
         orca: "#ffd15c",
+        
+        // Platform Colors
+        pump: "rgb(var(--primary-orange) / <alpha-value>)",
+        virtualCurve: "rgb(82 197 255 / <alpha-value>)",
         
         // Hover States
         hoverPrimary: "rgb(var(--primary-stroke) / <alpha-value>)",
