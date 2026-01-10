@@ -60,7 +60,7 @@ const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = 
                   suppressHydrationWarning={true}
                 />
               </div>
-              <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+              <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} suppressHydrationWarning={true} />
               
               <div className="border-primaryStroke border-l-[1px] flex h-full pr-[2px] pl-[2px] gap-[3px] justify-center items-center cursor-pointer">
                 <span className="contents">
@@ -278,7 +278,7 @@ const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = 
                   defaultValue="0"
                 />
               </div>
-              <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+              <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} suppressHydrationWarning={true} />
             </div>
             {/* Filter button */}
             <span className="contents">
