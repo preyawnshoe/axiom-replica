@@ -26,6 +26,12 @@ interface TokenColumnProps {
  */
 const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = {}, chain = 'sol' }: TokenColumnProps) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [activePreset, setActivePreset] = useState<'P1' | 'P2' | 'P3'>('P1');
+
+  const handlePresetClick = useCallback((preset: 'P1' | 'P2' | 'P3') => {
+    setActivePreset(preset);
+    // Here you can add logic to apply the preset settings
+  }, []);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -59,8 +65,17 @@ const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = 
                 <span className="contents">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button type="button" className="group w-[22px] h-[22px] flex flex-row gap-[4px] rounded-[4px] justify-center items-center transition-colors ease-in-out duration-125 hover:bg-primaryBlueHover/10" suppressHydrationWarning={true}>
-                        <span className="text-[12px] gap-[4px] flex flex-row justify-center items-center font-medium transition-colors ease-in-out duration-125 text-primaryBlue hover:text-primaryBlueHover">P1</span>
+                      <button 
+                        type="button" 
+                        className="group w-[22px] h-[22px] flex flex-row gap-[4px] rounded-[4px] justify-center items-center transition-colors ease-in-out duration-125 cursor-pointer hover:bg-primaryBlueHover/10"
+                        onClick={() => handlePresetClick('P1')}
+                        suppressHydrationWarning={true}
+                      >
+                        <span className={`text-[12px] gap-[4px] flex flex-row justify-center items-center font-medium transition-colors ease-in-out duration-125 ${
+                          activePreset === 'P1'
+                            ? 'text-primaryBlueHover'
+                            : 'text-textSecondary'
+                        }`}>P1</span>
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" className="p-0 border-0 bg-transparent shadow-none">
@@ -110,8 +125,17 @@ const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = 
                 <span className="contents">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button type="button" className="group w-[22px] h-[22px] flex flex-row gap-[4px] rounded-[4px] justify-center items-center transition-colors ease-in-out duration-125 hover:bg-primaryStroke/60" suppressHydrationWarning={true}>
-                        <span className="text-[12px] gap-[4px] flex flex-row justify-center items-center font-medium transition-colors ease-in-out duration-125 text-textSecondary">P2</span>
+                      <button 
+                        type="button" 
+                        className="group w-[22px] h-[22px] flex flex-row gap-[4px] rounded-[4px] justify-center items-center transition-colors ease-in-out duration-125 cursor-pointer hover:bg-primaryStroke/60"
+                        onClick={() => handlePresetClick('P2')}
+                        suppressHydrationWarning={true}
+                      >
+                        <span className={`text-[12px] gap-[4px] flex flex-row justify-center items-center font-medium transition-colors ease-in-out duration-125 ${
+                          activePreset === 'P2'
+                            ? 'text-primaryBlueHover'
+                            : 'text-textSecondary'
+                        }`}>P2</span>
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" className="p-0 border-0 bg-transparent shadow-none">
@@ -161,8 +185,17 @@ const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = 
                 <span className="contents">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button type="button" className="group w-[22px] h-[22px] flex flex-row gap-[4px] rounded-r-full rounded-l-[4px] justify-center items-center transition-colors ease-in-out duration-125 hover:bg-primaryStroke/60" suppressHydrationWarning={true}>
-                        <span className="text-[12px] gap-[4px] flex flex-row justify-center items-center font-medium transition-colors ease-in-out duration-125 text-textSecondary">P3</span>
+                      <button 
+                        type="button" 
+                        className="group w-[22px] h-[22px] flex flex-row gap-[4px] rounded-r-full rounded-l-[4px] justify-center items-center transition-colors ease-in-out duration-125 cursor-pointer hover:bg-primaryStroke/60"
+                        onClick={() => handlePresetClick('P3')}
+                        suppressHydrationWarning={true}
+                      >
+                        <span className={`text-[12px] gap-[4px] flex flex-row justify-center items-center font-medium transition-colors ease-in-out duration-125 ${
+                          activePreset === 'P3'
+                            ? 'text-primaryBlueHover'
+                            : 'text-textSecondary'
+                        }`}>P3</span>
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" className="p-0 border-0 bg-transparent shadow-none">
