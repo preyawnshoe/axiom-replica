@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { TradingSettingsModal } from "./TradingSettingsModal";
 import { DisplaySettings } from "./DisplaySettings";
 
@@ -36,7 +35,7 @@ export function BottomBar({ chain = 'sol' }: { chain?: 'sol' | 'bnb' }) {
                   <span className="text-[12px] group-hover/wallets:text-textSecondary font-medium text-textSecondary transition-colors duration-[125ms] ease-in-out">1</span>
                 </div>
                 <div className="flex flex-row gap-[4px] justify-start items-center">
-                  <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+                  <img alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                   <span className="text-[12px] font-medium text-textSecondary">0</span>
                 </div>
                 <i className="ri-arrow-down-s-line text-[14px] text-textSecondary group-hover:text-textPrimary transition-colors duration-150 ease-in-out cursor-pointer"></i>
@@ -107,9 +106,9 @@ export function BottomBar({ chain = 'sol' }: { chain?: 'sol' | 'bnb' }) {
             <div className="relative">
               <div className="relative flex flex-row h-[20px] px-[4px] gap-[4px] justify-start items-center rounded-full opacity-30" style={{ background: "linear-gradient(to right, rgb(83, 211, 142) 0%, rgb(231, 140, 25) 50%, rgb(62, 154, 0) 100%)", width: "40px" }}></div>
               <div className="absolute inset-[2px] bg-background rounded-full flex gap-[0px] justify-center items-center">
-                <Image alt="Pump" draggable={false} loading="eager" width={11} height={11} src="/images/pump.svg" />
-                <Image alt="Bonk" draggable={false} loading="eager" width={11} height={11} src="/images/bonk.svg" />
-                <Image alt="Bags" draggable={false} loading="eager" width={11} height={11} src="/images/bags.svg" />
+                <img alt="Pump" draggable={false} loading="eager" width={11} height={11} src="/images/pump.svg" />
+                <img alt="Bonk" draggable={false} loading="eager" width={11} height={11} src="/images/bonk.svg" />
+                <img alt="Bags" draggable={false} loading="eager" width={11} height={11} src="/images/bags.svg" />
               </div>
             </div>
           </button>
@@ -121,21 +120,21 @@ export function BottomBar({ chain = 'sol' }: { chain?: 'sol' | 'bnb' }) {
         <div className="flex flex-1 flex-row w-full gap-[8px] justify-start items-center">
           <span className="contents">
             <button className="hidden 2xl:flex flex-row flex-shrink-0 h-[24px] px-[0px] gap-[4px] justify-start items-center hover:brightness-110 transition-all duration-125 ease-in-out" style={{ color: "#F7931A" }} suppressHydrationWarning={true}>
-              <Image alt="BTC" draggable={false} loading="lazy" width={16} height={16} src="/images/btc-fill.svg" />
+              <img alt="BTC" draggable={false} loading="lazy" width={16} height={16} src="/images/btc-fill.svg" />
               <span className="text-[12px] font-normal">$90.5K</span>
             </button>
           </span>
 
           <span className="contents">
             <button className="hidden 2xl:flex flex-row flex-shrink-0 h-[24px] px-[0px] gap-[2px] justify-start items-center hover:brightness-110 transition-all duration-125 ease-in-out" style={{ color: "#497493" }} suppressHydrationWarning={true}>
-              <Image alt="ETH" draggable={false} loading="lazy" width={16} height={16} src="/images/eth-fill.svg" />
+              <img alt="ETH" draggable={false} loading="lazy" width={16} height={16} src="/images/eth-fill.svg" />
               <span className="text-[12px] font-normal">$3081</span>
             </button>
           </span>
 
           <span className="contents">
             <button className="hidden lg:flex flex-row flex-shrink-0 h-[24px] px-[0px] gap-[4px] justify-start items-center hover:brightness-110 transition-all duration-125 ease-in-out" style={{ color: "#14F195" }} suppressHydrationWarning={true}>
-              <Image alt={chain === 'sol' ? "SOL" : "BNB"} draggable={false} loading="lazy" width={16} height={16} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+              <img alt={chain === 'sol' ? "SOL" : "BNB"} draggable={false} loading="lazy" width={16} height={16} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
               <span className="text-[12px] font-normal">{chain === 'sol' ? '$136.04' : '$245.67'}</span>
             </button>
           </span>

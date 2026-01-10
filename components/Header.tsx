@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 interface HeaderProps {
   chain?: 'sol' | 'bnb';
   onChainChange?: (chain: 'sol' | 'bnb') => void;
@@ -113,7 +111,7 @@ export function Header({ chain = 'sol', onChainChange }: HeaderProps) {
                   suppressHydrationWarning={true}
                   onClick={() => onChainChange?.(chain === 'sol' ? 'bnb' : 'sol')}
                 >
-                  <Image alt={chain === 'sol' ? "Solana" : "BNB"} loading="lazy" width={16} height={16} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+                  <img alt={chain === 'sol' ? "Solana" : "BNB"} loading="lazy" width={16} height={16} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                   <span className="text-[14px] text-textPrimary font-medium">{chain.toUpperCase()}</span>
                   <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>
                 </button>
@@ -134,7 +132,7 @@ export function Header({ chain = 'sol', onChainChange }: HeaderProps) {
           <div className="relative flex">
             <div className="w-full">
               <button className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" type="button" style={{ borderColor: "rgba(20, 241, 149, 0.1)" }} suppressHydrationWarning={true}>
-                <Image alt="Solana" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
+                <img alt="Solana" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
                 <span className="text-[14px] text-textPrimary font-medium">SOL</span>
                 <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>
               </button>
@@ -190,12 +188,12 @@ export function Header({ chain = 'sol', onChainChange }: HeaderProps) {
                 <button className="w-fit min-w-max bg-primaryStroke flex flex-row h-[32px] px-[12px] py-[8px] gap-[8px] justify-center items-center rounded-full hover:bg-opacity-80 transition-colors hover:bg-secondaryStroke/80" suppressHydrationWarning={true}>
                   <i className="text-textPrimary ri-wallet-line text-[18px]"></i>
                   <div className="hidden xl:flex flex-shrink-0 whitespace-nowrap flex-row gap-[4px] justify-start items-center">
-                    <Image alt="SOL" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
+                    <img alt="SOL" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
                     <span className="text-[14px] font-semibold text-textPrimary">0</span>
                   </div>
                   <div className="hidden xl:block flex-shrink-0 w-[1px] h-full bg-secondaryStroke"></div>
                   <div className="hidden xl:flex flex-shrink-0 whitespace-nowrap flex-row gap-[4px] justify-start items-center">
-                    <Image alt="USDC" loading="lazy" width={18} height={18} src="/images/usdc-perps.svg" style={{ height: 'auto' }} />
+                    <img alt="USDC" loading="lazy" width={18} height={18} src="/images/usdc-perps.svg" style={{ height: 'auto' }} />
                     <span className="text-[14px] font-semibold text-textPrimary">0</span>
                   </div>
                   <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>
