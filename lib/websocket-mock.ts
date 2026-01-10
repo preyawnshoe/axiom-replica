@@ -21,7 +21,7 @@ class WebSocketMock {
   private allTokenIds: string[] = [];
 
   constructor() {
-    // Generate all token IDs matching the mockData structure
+    // Generate all token IDs matching the mockData structure exactly
     // SOL tokens (30 each for 3 columns = 90 tokens)
     for (let i = 0; i < 30; i++) {
       this.allTokenIds.push(`NP${i}...`); // New Pairs
@@ -64,8 +64,8 @@ class WebSocketMock {
   }
 
   private scheduleNextUpdate() {
-    // Double the rate with increased randomness: 400ms-1000ms range
-    const delay = Math.random() * 600 + 400;
+    // Slower updates: 3000ms-5000ms range for more gradual changes
+    const delay = Math.random() * 2000 + 3000;
     setTimeout(() => {
       if (this.isConnected) {
         this.broadcastMultipleUpdates();
@@ -89,14 +89,12 @@ class WebSocketMock {
   }
 
   private broadcastMultipleUpdates() {
-    // Update 5-20 random tokens per broadcast (increased randomness)
-    const numUpdates = Math.floor(Math.random() * 16) + 5;
-    const shuffled = [...this.allTokenIds].sort(() => Math.random() - 0.5);
-    const tokensToUpdate = shuffled.slice(0, numUpdates);
+    // Update ALL tokens for comprehensive real-time updates
+    const tokensToUpdate = [...this.allTokenIds];
 
     tokensToUpdate.forEach(tokenId => {
-      // Increased price change range: -12% to +12%
-      const changePercent = (Math.random() * 24 - 12).toFixed(2);
+      // Minimal price change range: -10% to +10% for gradual updates
+      const changePercent = (Math.random() * 20 - 10).toFixed(2);
       const isIncrease = parseFloat(changePercent) > 0;
       
       const update: PriceUpdate = {

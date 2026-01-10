@@ -115,7 +115,7 @@ body {
 /* Custom scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgb(var(--primary-stroke)) rgb(var(--background-secondary));
+  scrollbar-color: #5B6075 rgb(var(--background-secondary));
 }
 
 /* Webkit scrollbar styling */
@@ -129,7 +129,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--primary-stroke));
+  background: #5B6075;
   border-radius: 9999px;
 }
 

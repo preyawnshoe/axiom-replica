@@ -57,6 +57,7 @@ const TokenColumnComponent = ({ title, tokens, variant, count = 0, priceFlash = 
                   className="text-[12px] w-full text-textPrimary placeholder:text-textTertiary font-medium outline-none bg-transparent text-left" 
                   type="text" 
                   defaultValue="0"
+                  suppressHydrationWarning={true}
                 />
               </div>
               <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />

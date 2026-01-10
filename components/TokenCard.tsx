@@ -93,14 +93,13 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
   const displayImage = token.image || getRandomImage(token.id);
   
   const getVariantColor = () => {
-    switch (variant) {
-      case "final":
-        return "text-primaryBlue";
-      case "migrated":
-        return "text-primaryGreen";
-      default:
-        return "text-primaryYellow";
-    }
+    // Use token.id to create a consistent random color selection
+    const colors = ['text-primaryGreen', 'text-primaryYellow', 'text-primaryBlue'];
+    const hash = token.id.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    return colors[Math.abs(hash) % colors.length];
   };
 
   const getBorderColor = () => {
@@ -179,11 +178,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               <span className="contents">
                 <div className="flex flex-row h-[18px] gap-[4px] justify-end items-end">
                   <span className="text-textTertiary text-[12px] font-medium pb-[1.6px]">MC</span>
-                  <span className={`text-[16px] font-medium price-transition ${
-                    flashState === 'increase' ? 'text-increase' : 
-                    flashState === 'decrease' ? 'text-decrease' : 
-                    getVariantColor()
-                  }`}>{token.marketCap}</span>
+                  <span className={`text-[16px] font-medium price-transition ${getVariantColor()}`}>{token.marketCap}</span>
                 </div>
               </span>
             </div>
@@ -199,11 +194,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               <span className="contents">
                 <div className="flex flex-row h-[18px] flex-1 gap-[4px] justify-end items-end">
                   <span className="text-textTertiary text-[12px] font-medium pb-[1.6px] flex justify-center items-center">V</span>
-                  <span className={`text-[16px] font-medium price-transition ${
-                    flashState === 'increase' ? 'text-increase' : 
-                    flashState === 'decrease' ? 'text-decrease' : 
-                    'text-textPrimary'
-                  }`}>{token.volume}</span>
+                  <span className={`text-[16px] font-medium price-transition text-textPrimary`}>{token.volume}</span>
                 </div>
               </span>
             </div>
@@ -241,6 +232,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               type="button"
               className="flex flex-row gap-[4px] justify-center items-center rounded-[999px] h-[24px] whitespace-nowrap transition-all duration-0 relative overflow-hidden group/quickBuyButton"
               style={{ paddingLeft: 6, paddingRight: 6, backgroundColor: '#6683FF' }}
+              suppressHydrationWarning={true}
             >
               <i className="ri-flashlight-fill text-[16px] flex items-center relative z-10 text-black"></i>
               <span className="text-[12px] font-bold relative z-10 text-black">0 {chain === 'sol' ? 'SOL' : 'BNB'}</span>
@@ -371,7 +363,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
                   <TooltipTrigger asChild>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <button className="flex items-center cursor-pointer">
+                        <button className="flex items-center cursor-pointer" suppressHydrationWarning={true}>
                           <i className="text-textSecondary ri-search-line text-[16px] hover:text-primaryBlueHover transition-colors duration-[125ms]"></i>
                         </button>
                       </PopoverTrigger>
@@ -545,7 +537,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               >
                 <div className="flex flex-col w-full h-full gap-[8px] justify-start items-center p-[8px] pb-[10px]">
                   <div className="flex flex-row justify-between w-full items-center gap-[4px]">
-                    <button className="group flex flex-row gap-[2px] justify-start items-center hover:bg-secondaryStroke/40 px-[4px] py-[2px] rounded-[4px] transition-all duration-150 ease-in-out flex-shrink-0">
+                    <button className="group flex flex-row gap-[2px] justify-start items-center hover:bg-secondaryStroke/40 px-[4px] py-[2px] rounded-[4px] transition-all duration-150 ease-in-out flex-shrink-0" suppressHydrationWarning={true}>
                       <span className="text-textTertiary group-hover:text-textSecondary text-[12px] leading-[16px] font-normal transition-all duration-150">Aae8FpM1Z5bD...5KNn</span>
                       <i className="ri-file-copy-line text-[12px] text-textTertiary group-hover:text-textSecondary transition-all duration-150"></i>
                     </button>
