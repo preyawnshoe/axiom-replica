@@ -1,19 +1,30 @@
 "use client";
 
+import React, { useState } from "react";
 import Image from "next/image";
+import { TradingSettingsModal } from "./TradingSettingsModal";
+import { DisplaySettings } from "./DisplaySettings";
 
-export function BottomBar() {
+export function BottomBar({ chain = 'sol' }: { chain?: 'sol' | 'bnb' }) {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isDisplaySettingsOpen, setIsDisplaySettingsOpen] = useState(false);
+
   return (
-    <div className="flex overflow-x-auto overflow-y-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-row justify-between w-full h-[36px] min-h-[36px] border-t border-primaryStroke px-[24px] gap-[16px] items-center min-w-0">
-      {/* Left section */}
-      <div className="flex flex-row flex-shrink-0 gap-[8px] justify-start items-center">
-        {/* PRESET 1 button */}
-        <span className="contents">
-          <button className="text-primaryBlue bg-primaryBlue/20 flex flex-row h-[24px] px-[8px] gap-[4px] justify-start items-center rounded-[4px] hover:bg-primaryBlue/25 transition-colors duration-[150ms] ease-in-out cursor-pointer" suppressHydrationWarning={true}>
-            <i className="ri-list-settings-line text-[16px]"></i>
-            <span className="text-[12px] font-semibold">PRESET 1</span>
-          </button>
-        </span>
+    <>
+      <div className="flex overflow-x-auto overflow-y-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-row justify-between w-full h-[36px] min-h-[36px] border-t border-primaryStroke px-[12px] sm:px-[24px] gap-[8px] sm:gap-[16px] items-center min-w-0">
+        {/* Left section */}
+        <div className="flex flex-row flex-shrink-0 gap-[8px] justify-start items-center">
+          {/* PRESET 1 button */}
+          <span className="contents">
+            <button 
+              onClick={() => setIsSettingsOpen(true)}
+              className="text-primaryBlue bg-primaryBlue/20 flex flex-row h-[24px] px-[8px] gap-[4px] justify-start items-center rounded-[4px] hover:bg-primaryBlue/25 transition-colors duration-[150ms] ease-in-out cursor-pointer" 
+              suppressHydrationWarning={true}
+            >
+              <i className="ri-list-settings-line text-[16px]"></i>
+              <span className="text-[12px] font-semibold">PRESET 1</span>
+            </button>
+          </span>
 
         {/* Wallet selector */}
         <div className="relative flex">
@@ -25,7 +36,7 @@ export function BottomBar() {
                   <span className="text-[12px] group-hover/wallets:text-textSecondary font-medium text-textSecondary transition-colors duration-[125ms] ease-in-out">1</span>
                 </div>
                 <div className="flex flex-row gap-[4px] justify-start items-center">
-                  <Image alt="SOL" loading="lazy" width={14} height={14} src="/images/sol-fill.svg" />
+                  <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                   <span className="text-[12px] font-medium text-textSecondary">0</span>
                 </div>
                 <i className="ri-arrow-down-s-line text-[14px] text-textSecondary group-hover:text-textPrimary transition-colors duration-150 ease-in-out cursor-pointer"></i>
@@ -39,7 +50,11 @@ export function BottomBar() {
         {/* Action buttons */}
         <div className="flex flex-row gap-[8px] justify-start items-center">
           <span className="contents">
-            <button className="-mr-[4px] min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/40 transition-colors duration-125 ease-in-out rounded-[4px]" suppressHydrationWarning={true}>
+            <button 
+              onClick={() => setIsDisplaySettingsOpen(true)}
+              className="-mr-[4px] min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/40 transition-colors duration-125 ease-in-out rounded-[4px]" 
+              suppressHydrationWarning={true}
+            >
               <i className="ri-settings-3-line text-[14px]"></i>
             </button>
           </span>
@@ -120,8 +135,8 @@ export function BottomBar() {
 
           <span className="contents">
             <button className="hidden lg:flex flex-row flex-shrink-0 h-[24px] px-[0px] gap-[4px] justify-start items-center hover:brightness-110 transition-all duration-125 ease-in-out" style={{ color: "#14F195" }} suppressHydrationWarning={true}>
-              <Image alt="SOL" draggable={false} loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
-              <span className="text-[12px] font-normal">$136.04</span>
+              <Image alt={chain === 'sol' ? "SOL" : "BNB"} draggable={false} loading="lazy" width={16} height={16} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+              <span className="text-[12px] font-normal">{chain === 'sol' ? '$136.04' : '$245.67'}</span>
             </button>
           </span>
         </div>
@@ -227,5 +242,15 @@ export function BottomBar() {
         </div>
       </div>
     </div>
+
+    <TradingSettingsModal 
+      isOpen={isSettingsOpen} 
+      onClose={() => setIsSettingsOpen(false)} 
+    />
+    <DisplaySettings 
+      isOpen={isDisplaySettingsOpen} 
+      onClose={() => setIsDisplaySettingsOpen(false)} 
+    />
+    </>
   );
 }

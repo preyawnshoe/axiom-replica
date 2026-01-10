@@ -42,10 +42,47 @@ interface TokenCardProps {
   token: TokenData;
   variant?: "new" | "final" | "migrated";
   flashState?: 'increase' | 'decrease' | null;
+  chain?: 'sol' | 'bnb';
 }
 
-export function TokenCard({ token, variant = "new", flashState = null }: TokenCardProps) {
+export function TokenCard({ token, variant = "new", flashState = null, chain = 'sol' }: TokenCardProps) {
   const [chefPopoverOpen, setChefPopoverOpen] = useState(false);
+
+  // List of available images from public/images/
+  const availableImages = [
+    '/images/bags.svg',
+    '/images/bnb-fill.svg',
+    '/images/bonk-grad.svg',
+    '/images/bonk.svg',
+    '/images/btc-fill.svg',
+    '/images/daosfun.svg',
+    '/images/eth-fill.svg',
+    '/images/material-symbols-candlestick-chart.svg',
+    '/images/mayhem.svg',
+    '/images/pump.svg',
+    '/images/sol-fill.svg',
+    '/images/usd1.svg',
+    '/images/usdc-perps.svg',
+    '/images/usdc.svg',
+    '/images/virtual-curve-grad.svg',
+    '/images/virtual-curve.svg',
+  ];
+
+  // Function to get deterministic random image based on token id
+  const getRandomImage = (id: string) => {
+    // Simple hash function for the id
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      const char = id.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    const index = Math.abs(hash) % availableImages.length;
+    return availableImages[index];
+  };
+
+  // Use token.image if available, otherwise deterministic random image
+  const displayImage = token.image || getRandomImage(token.id);
   
   const getVariantColor = () => {
     switch (variant) {
@@ -92,9 +129,7 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
               <div className="group-hover:bg-primaryStroke/50 absolute inset-0 z-10"></div>
               <div className="absolute inset-0 z-0" style={{ backgroundColor: '#101114' }}></div>
             </div>
-            <div className={`relative flex flex-row gap-[8px] justify-end items-end z-20 ${
-              flashState ? `price-flash-${flashState}` : ''
-            }`}>
+            <div className="relative flex flex-row gap-[8px] justify-end items-end z-20">
               <span className="contents">
                 <div className="flex flex-row h-[18px] gap-[4px] justify-end items-end">
                   <span className="text-textTertiary text-[12px] font-medium pb-[1.6px]">MC</span>
@@ -114,9 +149,7 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
               <div className="group-hover:bg-primaryStroke/50 absolute inset-0 z-10"></div>
               <div className="absolute inset-0 z-0" style={{ backgroundColor: '#101114' }}></div>
             </div>
-            <div className={`relative flex flex-row gap-[8px] justify-start items-start z-20 ${
-              flashState ? `price-flash-${flashState}` : ''
-            }`}>
+            <div className="relative flex flex-row gap-[8px] justify-start items-start z-20">
               <span className="contents">
                 <div className="flex flex-row h-[18px] flex-1 gap-[4px] justify-end items-end">
                   <span className="text-textTertiary text-[12px] font-medium pb-[1.6px] flex justify-center items-center">V</span>
@@ -140,7 +173,7 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
               <div className="relative flex flex-row justify-end items-center h-[12px] gap-[4px] flex-shrink-0 group/image text-nowrap z-20">
                 <span className="text-textTertiary text-[11px] font-medium">F</span>
                 <div className="flex flex-row gap-[2px] items-center">
-                  <img alt="SOL" loading="eager" width="14" height="14" className="w-[14px] h-[14px]" src="/images/sol-fill.svg" />
+                  <img alt={chain === 'sol' ? "SOL" : "BNB"} loading="eager" width="14" height="14" className="w-[14px] h-[14px]" src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                   <span className="text-textPrimary text-[12px] font-medium">{token.floor}</span>
                 </div>
               </div>
@@ -164,7 +197,7 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
               style={{ paddingLeft: 6, paddingRight: 6, backgroundColor: '#6683FF' }}
             >
               <i className="ri-flashlight-fill text-[16px] flex items-center relative z-10 text-black"></i>
-              <span className="text-[12px] font-bold relative z-10 text-black">0 SOL</span>
+              <span className="text-[12px] font-bold relative z-10 text-black">0 {chain === 'sol' ? 'SOL' : 'BNB'}</span>
             </button>
             
             <Modal>
@@ -181,8 +214,12 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
                 
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 p-4 bg-backgroundSecondary rounded border border-primaryStroke">
-                    <div className="w-16 h-16 rounded-full bg-primaryStroke flex items-center justify-center">
-                      {token.imageText && <span className="text-2xl">{token.imageText}</span>}
+                    <div className="w-16 h-16 rounded-full bg-primaryStroke flex items-center justify-center overflow-hidden">
+                      {displayImage ? (
+                        <img alt={token.name} loading="eager" width="64" height="64" className="rounded-full w-16 h-16 object-cover" src={displayImage} style={{ objectFit: 'cover' }} />
+                      ) : (
+                        <span className="text-2xl">{token.imageText || token.ticker.charAt(0)}</span>
+                      )}
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-textPrimary">{token.name}</h3>
@@ -205,7 +242,7 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
                     </div>
                     <div className="p-3 bg-backgroundSecondary rounded border border-primaryStroke">
                       <p className="text-textTertiary text-xs mb-1">Floor Price</p>
-                      <p className="text-textPrimary text-lg font-bold">{token.floor} SOL</p>
+                      <p className="text-textPrimary text-lg font-bold">{token.floor} {chain === 'sol' ? 'SOL' : 'BNB'}</p>
                     </div>
                     <div className="p-3 bg-backgroundSecondary rounded border border-primaryStroke">
                       <p className="text-textTertiary text-xs mb-1">Transactions</p>
@@ -262,8 +299,8 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
                 <div className="w-[68px] h-[68px] flex-shrink-0 group/image relative">
                   <div className="w-full h-full relative">
                     <div className="pointer-events-none border-textPrimary/10 border-[1px] absolute w-[68px] h-[68px] z-10 rounded-[1px]"></div>
-                    {token.image ? (
-                      <img alt={token.name} loading="eager" width="68" height="68" className="rounded-[1px] w-[68px] h-[68px] object-cover" src={token.image} style={{ objectFit: 'cover' }} />
+                    {displayImage ? (
+                      <img alt={token.name} loading="eager" width="68" height="68" className="rounded-[1px] w-[68px] h-[68px] object-cover" src={displayImage} style={{ objectFit: 'cover' }} />
                     ) : (
                       <div className="w-[68px] h-[68px] rounded-[1px] flex items-center justify-center text-textSecondary text-[24px] font-semibold" style={{ backgroundColor: '#101114' }}>
                         {token.imageText || token.ticker.charAt(0)}
@@ -494,7 +531,7 @@ export function TokenCard({ token, variant = "new", flashState = null }: TokenCa
                       <div className="flex flex-row h-[18px] gap-[4px] flex-1 justify-start items-center">
                         <i className="ri-wallet-line text-[14px] text-textSecondary"></i>
                         <div className="flex flex-row items-center gap-[2px]">
-                          <img alt="SOL" loading="eager" width="14" height="14" className="w-[14px] h-[14px]" src="/images/sol-fill.svg" />
+                          <img alt={chain === 'sol' ? "SOL" : "BNB"} loading="eager" width="14" height="14" className="w-[14px] h-[14px]" src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                           <span className="text-[14px] leading-[16px] font-normal text-textPrimary">753.1</span>
                         </div>
                       </div>

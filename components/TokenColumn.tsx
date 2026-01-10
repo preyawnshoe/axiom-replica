@@ -10,12 +10,13 @@ interface TokenColumnProps {
   variant: "new" | "final" | "migrated";
   count?: number;
   priceFlash?: PriceFlash;
+  chain?: 'sol' | 'bnb';
 }
 
-export function TokenColumn({ title, tokens, variant, count = 0, priceFlash = {} }: TokenColumnProps) {
+export function TokenColumn({ title, tokens, variant, count = 0, priceFlash = {}, chain = 'sol' }: TokenColumnProps) {
 
   return (
-    <div className="border-r-[1px] border-primaryStroke flex flex-1 flex-col h-full justify-start items-center overflow-hidden">
+    <div className="border-r-[1px] border-primaryStroke md:border-r-[1px] flex flex-1 flex-col h-full justify-start items-center overflow-hidden last:border-r-0">
       {/* Column header */}
       <div className="sticky top-0 z-30 w-full">
         {/* Main header with title and controls */}
@@ -39,7 +40,7 @@ export function TokenColumn({ title, tokens, variant, count = 0, priceFlash = {}
                   defaultValue="0"
                 />
               </div>
-              <Image alt="SOL" loading="lazy" width={14} height={14} src="/images/sol-fill.svg" />
+              <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
               
               <div className="border-primaryStroke border-l-[1px] flex h-full pr-[2px] pl-[2px] gap-[3px] justify-center items-center cursor-pointer">
                 <span className="contents">
@@ -62,12 +63,33 @@ export function TokenColumn({ title, tokens, variant, count = 0, priceFlash = {}
           </div>
         </div>
 
-        {/* Settings button */}
-        <span className="contents">
-          <button type="button" className="flex flex-row p-[4px] w-[24px] h-[24px] justify-center items-center transition-opacity duration-150 ease-in-out cursor-pointer rounded-[8px] sm:rounded-[4px] relative hover:bg-primaryStroke/30" suppressHydrationWarning={true}>
-            <i className="ri-equalizer-3-line text-[16px] text-textSecondary"></i>
-          </button>
-        </span>
+        {/* Mobile header */}
+        <div className="flex sm:hidden sticky top-0 z-30 flex-row w-full min-h-[40px] justify-between items-center px-[12px] border-b-[1px] border-primaryStroke">
+          <span className="text-textPrimary text-[16px] font-medium">{title}</span>
+          <div className="flex items-center gap-[8px]">
+            {/* Mobile input field */}
+            <div className="hidden xs:flex overflow-hidden whitespace-nowrap border-primaryStroke font-normal border-[1px] flex flex-row h-[28px] pl-[4px] gap-[6px] justify-start items-center rounded-full">
+              <span className="flex text-[14px] text-textTertiary font-medium">
+                <i className="ri-flashlight-fill"></i>
+              </span>
+              <div className="flex flex-1 min-w-[40px]">
+                <input 
+                  placeholder="0.0" 
+                  className="text-[12px] w-full text-textPrimary placeholder:text-textTertiary font-medium outline-none bg-transparent text-left" 
+                  type="text" 
+                  defaultValue="0"
+                />
+              </div>
+              <Image alt={chain === 'sol' ? "SOL" : "BNB"} loading="lazy" width={14} height={14} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+            </div>
+            {/* Settings button */}
+            <span className="contents">
+              <button type="button" className="flex flex-row p-[4px] w-[24px] h-[24px] justify-center items-center transition-opacity duration-150 ease-in-out cursor-pointer rounded-[8px] hover:bg-primaryStroke/30" suppressHydrationWarning={true}>
+                <i className="ri-equalizer-3-line text-[16px] text-textSecondary"></i>
+              </button>
+            </span>
+          </div>
+        </div>
         </div>
       </div>
       
@@ -81,6 +103,7 @@ export function TokenColumn({ title, tokens, variant, count = 0, priceFlash = {}
                 token={token} 
                 variant={variant}
                 flashState={priceFlash[token.id] || null}
+                chain={chain}
               />
             ))}
           </div>

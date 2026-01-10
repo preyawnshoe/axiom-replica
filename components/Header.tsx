@@ -2,26 +2,34 @@
 
 import Image from "next/image";
 
-const navItems = [
-  { label: "Discover", href: "/discover?chain=sol", active: false },
-  { label: "Pulse", href: "/pulse?chain=sol", active: true },
-  { label: "Trackers", href: "/trackers?chain=sol", active: false },
-  { label: "Perpetuals", href: "/perpetuals?chain=sol", active: false },
-  { label: "Yield", href: "/yield?chain=sol", active: false },
-  { label: "Vision", href: "/vision?chain=sol", active: false },
-  { label: "Portfolio", href: "/portfolio?chain=sol", active: false },
-  { label: "Rewards", href: "/rewards?chain=sol", active: false },
-];
+interface HeaderProps {
+  chain?: 'sol' | 'bnb';
+  onChainChange?: (chain: 'sol' | 'bnb') => void;
+}
 
-export function Header() {
+export function Header({ chain = 'sol', onChainChange }: HeaderProps) {
+  const homeHref = `/?chain=${chain}`;
+  const navItems = [
+    { label: "Discover", href: homeHref, active: false },
+    { label: "Pulse", href: homeHref, active: true },
+    { label: "Trackers", href: homeHref, active: false },
+    { label: "Perpetuals", href: homeHref, active: false },
+    ...(chain === 'sol' ? [
+      { label: "Yield", href: homeHref, active: false },
+      { label: "Vision", href: homeHref, active: false },
+    ] : []),
+    { label: "Portfolio", href: homeHref, active: false },
+    { label: "Rewards", href: homeHref, active: false },
+  ];
+
   return (
     <div
-      className="border-b-[1px] border-primaryStroke overflow-hidden flex flex-row w-full h-[52px] sm:h-[64px] min-h-[48px] sm:min-h-[64px] px-[16px] sm:px-[16px] lg:px-[24px] gap-[16px] sm:gap-[16px] lg:gap-[24px] justify-between sm:justify-start items-center"
+      className="border-b border-primaryStroke overflow-hidden flex flex-row w-full h-[52px] sm:h-[64px] min-h-[48px] sm:min-h-[64px] px-[12px] sm:px-[16px] lg:px-[24px] gap-[8px] sm:gap-[16px] lg:gap-[24px] justify-between sm:justify-start items-center"
       style={{ borderColor: "rgb(var(--primary-stroke))" }}
     >
       {/* Logo */}
       <div className="flex flex-row flex-shrink-0 gap-[0px] justify-start items-center w-[36px] sm:w-[24px] 2xl:w-[130px]">
-        <a href="/?chain=sol">
+        <a href={`/?chain=${chain}`}>
           <div className="flex flex-row items-center">
             <div className="flex flex-row items-center">
               <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[36px] h-[36px] sm:w-[36px] sm:h-[36px] text-textPrimary">
@@ -64,12 +72,13 @@ export function Header() {
                 <a href={item.href}>
                   <button
                     className={`
-                    flex flex-row h-[32px] text-nowrap px-[8px] xl:px-[14px] 
-                    justify-start items-center 
-                    [transition:none] duration-0
+                    flex flex-row h-[32px] text-nowrap px-[8px] xl:px-[14px]
+                    justify-start items-center bg-transparent cursor-pointer
+                    transition-colors duration-150 ease-in-out
                     hover:bg-primaryBlue/20 hover:text-primaryBlue hover:[transition:background-color_135ms_ease-in-out,color_135ms_ease-in-out] rounded-[4px]
                     ${item.active ? "text-primaryBlue" : "text-textPrimary"}
                   `}
+                    style={{ transition: "background-color .135s ease-in-out, color .135s ease-in-out" }}
                     suppressHydrationWarning={true}
                   >
                     <span className="text-[14px] font-medium">{item.label}</span>
@@ -97,9 +106,15 @@ export function Header() {
           <div className="hidden sm:block">
             <div className="relative flex">
               <div className="w-full">
-                <button className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" type="button" style={{ borderColor: "rgba(20, 241, 149, 0.1)" }} suppressHydrationWarning={true}>
-                  <Image alt="Solana" loading="lazy" width={16} height={16} src="/images/sol-fill.svg" />
-                  <span className="text-[14px] text-textPrimary font-medium">SOL</span>
+                <button 
+                  className="hover:brightness-125 border-[2px] flex flex-shrink-0 flex-row h-[32px] pl-[8px] pr-[6px] gap-[6px] justify-center items-center rounded-full transition-all duration-150 ease-in-out active:scale-[0.96]" 
+                  type="button" 
+                  style={{ borderColor: chain === 'sol' ? "rgba(20, 241, 149, 0.1)" : "rgba(240, 185, 11, 0.15)" }} 
+                  suppressHydrationWarning={true}
+                  onClick={() => onChainChange?.(chain === 'sol' ? 'bnb' : 'sol')}
+                >
+                  <Image alt={chain === 'sol' ? "Solana" : "BNB"} loading="lazy" width={16} height={16} src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+                  <span className="text-[14px] text-textPrimary font-medium">{chain.toUpperCase()}</span>
                   <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>
                 </button>
               </div>
@@ -180,7 +195,7 @@ export function Header() {
                   </div>
                   <div className="hidden xl:block flex-shrink-0 w-[1px] h-full bg-secondaryStroke"></div>
                   <div className="hidden xl:flex flex-shrink-0 whitespace-nowrap flex-row gap-[4px] justify-start items-center">
-                    <Image alt="USDC" loading="lazy" width={18} height={28} src="/images/usdc-perps.svg" />
+                    <Image alt="USDC" loading="lazy" width={18} height={18} src="/images/usdc-perps.svg" style={{ height: 'auto' }} />
                     <span className="text-[14px] font-semibold text-textPrimary">0</span>
                   </div>
                   <i className="text-textPrimary ri-arrow-down-s-line text-[18px]"></i>

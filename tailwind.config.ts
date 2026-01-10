@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+      },
       borderColor: {
         DEFAULT: "rgb(var(--primary-stroke) / <alpha-value>)",
       },

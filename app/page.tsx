@@ -1,19 +1,41 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Header } from "@/components/Header";
 import { Toolbar } from "@/components/Toolbar";
 import { TokenColumn } from "@/components/TokenColumn";
 import { BottomBar } from "@/components/BottomBar";
+import { DisplaySettings } from "@/components/DisplaySettings";
 import { TokenData } from "@/components/TokenCard";
-import { newPairsTokens, finalStretchTokens, migratedTokens } from "@/lib/mockData";
+import { newPairsTokens, finalStretchTokens, migratedTokens, bnbNewPairsTokens, bnbFinalStretchTokens, bnbMigratedTokens } from "@/lib/mockData";
 import { useRealtimePrices } from "@/hooks/useRealtimePrices";
 import { PriceUpdate } from "@/lib/websocket-mock";
 
 export default function Home() {
+  const [selectedChain, setSelectedChain] = useState<'sol' | 'bnb'>('sol');
   const [newPairs, setNewPairs] = useState<TokenData[]>(newPairsTokens);
   const [finalStretch, setFinalStretch] = useState<TokenData[]>(finalStretchTokens);
   const [migrated, setMigrated] = useState<TokenData[]>(migratedTokens);
+  const [isDisplaySettingsOpen, setIsDisplaySettingsOpen] = useState(false);
+  const [displayOptions, setDisplayOptions] = useState({
+    showNewPairs: true,
+    showFinalStretch: true,
+    showMigrated: true,
+  });
+
+  const switchChain = useCallback((chain: 'sol' | 'bnb') => {
+    setSelectedChain(chain);
+    if (chain === 'sol') {
+      setNewPairs(newPairsTokens);
+      setFinalStretch(finalStretchTokens);
+      setMigrated(migratedTokens);
+    } else {
+      setNewPairs(bnbNewPairsTokens);
+      setFinalStretch(bnbFinalStretchTokens);
+      setMigrated(bnbMigratedTokens);
+    }
+  }, []);
 
   // Handle real-time price updates
   const handlePriceUpdate = useCallback((update: PriceUpdate) => {
@@ -75,7 +97,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-background">
       {/* Header */}
-      <Header />
+      <Header chain={selectedChain} onChainChange={setSelectedChain} />
       
       {/* Toolbar */}
       <Toolbar />
@@ -85,26 +107,25 @@ export default function Home() {
         <audio></audio>
         <audio></audio>
         <audio></audio>
-        <div className="flex flex-col w-full h-full gap-[16px] py-[24px] px-[16px] lg:px-[24px] justify-start items-center overflow-hidden">
+        <div className="flex flex-col w-full h-full gap-[16px] py-[16px] px-[12px] sm:py-[24px] sm:px-[16px] lg:px-[24px] justify-start items-center overflow-hidden">
           {/* Page header */}
-          <div className="flex-none flex flex-row w-full h-[32px] justify-start items-center">
-            <div className="flex-1 flex items-center gap-3">
+          <div className="flex-none flex flex-col sm:flex-row w-full gap-3 sm:gap-0 sm:h-[32px] justify-start items-start sm:items-center">
+            <div className="flex-1 flex items-center gap-3 mb-3 sm:mb-0">
               <span className="text-textPrimary text-[20px] font-medium">Pulse</span>
               <div className="flex items-center gap-1">
                 <span className="contents">
-                  <button type="button" className="relative flex items-center justify-center w-[32px] h-[32px] rounded-full transition-all duration-150 bg-primaryStroke/60 scale-110" aria-label="Switch to Solana" suppressHydrationWarning={true}>
+                  <button type="button" className={`relative flex items-center justify-center w-[32px] h-[32px] rounded-full transition-all duration-150 ${selectedChain === 'sol' ? 'bg-primaryStroke/60 scale-110' : 'hover:bg-primaryStroke/30 opacity-60 hover:opacity-100'}`} aria-label="Switch to Solana" suppressHydrationWarning={true} onClick={() => switchChain('sol')}>
                     <img alt="SOL" width="20" height="20" src="/images/sol-fill.svg" className="" />
                   </button>
                 </span>
                 <span className="contents">
-                  <button type="button" className="relative flex items-center justify-center w-[32px] h-[32px] rounded-full transition-all duration-150 hover:bg-primaryStroke/30 opacity-60 hover:opacity-100" aria-label="Switch to BNB" suppressHydrationWarning={true}>
-                    <img alt="BNB" width="20" height="20" src="/images/bnb-fill.svg" className="grayscale-[0.3]" />
+                  <button type="button" className={`relative flex items-center justify-center w-[32px] h-[32px] rounded-full transition-all duration-150 ${selectedChain === 'bnb' ? 'bg-primaryStroke/60 scale-110' : 'hover:bg-primaryStroke/30 opacity-60 hover:opacity-100'}`} aria-label="Switch to BNB" suppressHydrationWarning={true} onClick={() => switchChain('bnb')}>
+                    <img alt="BNB" width="20" height="20" src="/images/bnb-fill.svg" className={selectedChain === 'bnb' ? '' : 'grayscale-[0.3]'} />
                   </button>
                 </span>
               </div>
             </div>
-            <div className="pr-[8px]"></div>
-            <div className="flex flex-row gap-4 items-center">
+            <div className="flex flex-wrap gap-2 sm:gap-4 items-center justify-start sm:justify-end w-full sm:w-auto">
               <span className="contents">
                 <button type="button" className="flex flex-row w-[24px] h-[24px] justify-center items-center" suppressHydrationWarning={true}>
                   <i className="ri-question-line text-[20px] text-textTertiary hover:text-textSecondary transition-all duration-150 ease-in-out"></i>
@@ -112,15 +133,21 @@ export default function Home() {
               </span>
               <div className="relative flex">
                 <div className="w-full">
-                  <button className="bg-primaryStroke flex flex-row h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full hover:bg-secondaryStroke/80 transition-color duration-[150ms] ease-in-out" suppressHydrationWarning={true}>
-                    <div className="relative">
-                      <i className="ri-list-check text-[18px] text-textPrimary"></i>
-                    </div>
-                    <div className="whitespace-nowrap flex flex-row gap-[4px] justify-start items-center">
-                      <span className="text-[14px] font-bold text-textPrimary">Display</span>
-                    </div>
-                    <i className="ri-arrow-down-s-line text-[18px] text-textPrimary"></i>
-                  </button>
+                  <span className="contents">
+                    <button 
+                      onClick={() => setIsDisplaySettingsOpen(true)}
+                      className="bg-primaryStroke flex flex-row h-[32px] px-[12px] gap-[8px] justify-center items-center rounded-full hover:bg-secondaryStroke/80 transition-color duration-[150ms] ease-in-out" 
+                      suppressHydrationWarning={true}
+                    >
+                      <div className="relative">
+                        <i className="ri-list-check text-[18px] text-textPrimary"></i>
+                      </div>
+                      <div className="whitespace-nowrap flex flex-row gap-[4px] justify-start items-center">
+                        <span className="text-[14px] font-bold text-textPrimary">Display</span>
+                      </div>
+                      <i className="ri-arrow-down-s-line text-[18px] text-textPrimary"></i>
+                    </button>
+                  </span>
                 </div>
               </div>
               <span className="contents">
@@ -153,7 +180,7 @@ export default function Home() {
                         <span className="text-[14px] text-textSecondary font-medium group-hover:text-textPrimary transition-colors duration-150 ease-in-out cursor-pointer">1</span>
                       </div>
                       <div className="flex flex-row gap-[4px] justify-center items-center">
-                        <img alt="SOL" width="16" height="16" src="/images/sol-fill.svg" />
+                        <img alt={selectedChain === 'sol' ? "SOL" : "BNB"} width="16" height="16" src={selectedChain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                         <span className="text-[14px] text-textPrimary font-medium group-hover:text-textPrimary transition-colors duration-150 ease-in-out cursor-pointer">
                           <span>0</span>
                         </span>
@@ -172,7 +199,7 @@ export default function Home() {
                     <div className="flex flex-1 sm:max-w-[60px] min-w-[0px]">
                       <input placeholder="0.0" className="text-[14px] w-full text-textPrimary placeholder:text-textTertiary font-medium outline-none bg-transparent text-left" type="text" defaultValue="0" />
                     </div>
-                    <img alt="SOL" width="16" height="16" src="/images/sol-fill.svg" />
+                    <img alt={selectedChain === 'sol' ? "SOL" : "BNB"} width="16" height="16" src={selectedChain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
                     <div className="border-primaryStroke border-l-[1px] flex h-full pr-[3px] pl-[3px] gap-[6px] justify-center items-center cursor-pointer">
                       <span className="contents">
                         <button type="button" className="group w-[24px] h-[24px] flex flex-row gap-[4px] rounded-[4px] justify-center items-center transition-colors ease-in-out duration-125 hover:bg-primaryBlueHover/10" suppressHydrationWarning={true}>
@@ -197,36 +224,63 @@ export default function Home() {
           </div>
 
           {/* Three columns */}
-          <div className="flex-1 border-primaryStroke border-[1px] flex flex-row w-full justify-start items-start rounded-[8px] sm:rounded-[4px] overflow-hidden" style={{ backgroundColor: '#101114' }}>
-            <div className="flex flex-1 h-full rounded-[8px] sm:rounded-[4px] overflow-hidden" style={{ backgroundColor: '#101114' }}>
-              <TokenColumn 
-                title="New Pairs" 
-                tokens={newPairs} 
-                variant="new" 
-                count={0}
-                priceFlash={priceFlash}
-              />
-              <TokenColumn 
-                title="Final Stretch" 
-                tokens={finalStretch} 
-                variant="final" 
-                count={0}
-                priceFlash={priceFlash}
-              />
-              <TokenColumn 
-                title="Migrated" 
-                tokens={migrated} 
-                variant="migrated" 
-                count={0}
-                priceFlash={priceFlash}
-              />
+          <div className="flex-1 border-primaryStroke border-[1px] flex flex-col md:flex-row w-full justify-start items-start rounded-[8px] sm:rounded-[4px] overflow-hidden" style={{ backgroundColor: '#101114' }}>
+            <div className="flex flex-col md:flex-row w-full h-full rounded-[8px] sm:rounded-[4px] overflow-hidden" style={{ backgroundColor: '#101114' }}>
+              {displayOptions.showNewPairs && (
+                <TokenColumn 
+                  title="New Pairs" 
+                  tokens={newPairs} 
+                  variant="new" 
+                  count={0}
+                  priceFlash={priceFlash}
+                  chain={selectedChain}
+                />
+              )}
+              {displayOptions.showFinalStretch && (
+                <TokenColumn 
+                  title="Final Stretch" 
+                  tokens={finalStretch} 
+                  variant="final" 
+                  count={0}
+                  priceFlash={priceFlash}
+                  chain={selectedChain}
+                />
+              )}
+              {displayOptions.showMigrated && (
+                <TokenColumn 
+                  title="Migrated" 
+                  tokens={migrated} 
+                  variant="migrated" 
+                  count={0}
+                  priceFlash={priceFlash}
+                  chain={selectedChain}
+                />
+              )}
+              {!displayOptions.showNewPairs && !displayOptions.showFinalStretch && !displayOptions.showMigrated && (
+                <div className="flex-1 flex items-center justify-center p-8">
+                  <div className="text-center">
+                    <i className="ri-eye-off-line text-[48px] text-textTertiary mb-4"></i>
+                    <p className="text-textSecondary text-lg font-medium">No columns selected</p>
+                    <p className="text-textTertiary text-sm">Use the Display button to show token columns</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <BottomBar />
+      <BottomBar chain={selectedChain} />
+      
+      {/* Display Settings Modal */}
+      <DisplaySettings 
+        isOpen={isDisplaySettingsOpen} 
+        onClose={() => setIsDisplaySettingsOpen(false)}
+        style={{
+          inset: "148px 335.641px auto auto"
+        }}
+      />
     </div>
   );
 }

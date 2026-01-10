@@ -22,7 +22,11 @@ class WebSocketMock {
     '6GZx...TS3V', '2WBR...NH8Y', '8c1c...pump', '2sDz...pump', '9kGe...bonk',
     'TSO...pump', '9aXv...7nNm', '5ZKQ...BA4r', 'HF6P...NSTU', 'ESPP...79Uf',
     '43vY...pump', 'Goog...leAI', 'WoB5...FdZL', 'GCED...Me4T', '7mQV...oM3H',
-    'FXtM...A2vW', 'BgDR...iyrw', 'Zama...5678'
+    'FXtM...A2vW', 'BgDR...iyrw', 'Zama...5678',
+    // BNB tokens
+    '0x12...abcd', '0x34...efgh', '0x56...ijkl', '0x78...mnop', '0x9a...qrst', '0xbc...uvwx',
+    '0xde...yz01', '0xf0...1234', '0x78...abcd', '0xde...yz12', '0xf0...3456', '0x12...5678',
+    '0x34...9abc', '0x56...def0'
   ];
 
   connect() {

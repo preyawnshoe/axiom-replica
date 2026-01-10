@@ -46,6 +46,55 @@
   --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Primary Brand Colors */
+  --color-primaryBlue: rgb(var(--primary-color));
+  --color-primaryBlueHover: rgb(var(--primary-color-hover));
+  
+  /* Background Colors */
+  --color-backgroundSecondary: rgb(var(--background-secondary));
+  --color-backgroundTertiary: rgb(var(--background-tertiary));
+  
+  /* Border/Stroke Colors */
+  --color-primaryStroke: rgb(var(--primary-stroke));
+  --color-secondaryStroke: rgb(var(--secondary-stroke));
+  --color-borderSubtle: rgb(var(--border-subtle));
+  
+  /* Text Colors */
+  --color-textPrimary: rgb(var(--text-primary));
+  --color-textSecondary: rgb(var(--text-secondary));
+  --color-textTertiary: rgb(var(--text-tertiary));
+  --color-translationText: rgb(var(--translation-text-color));
+  
+  /* Semantic Colors */
+  --color-increase: rgb(var(--increase));
+  --color-decrease: rgb(var(--decrease));
+  --color-increaseHover: rgb(var(--increase-hover));
+  --color-decreaseHover: rgb(var(--decrease-hover));
+  
+  /* Chart Colors */
+  --color-chartUp: rgb(var(--chart-up));
+  --color-chartDown: rgb(var(--chart-down));
+  
+  /* Semantic Brand Colors */
+  --color-primaryGreen: rgb(var(--primary-green));
+  --color-primaryYellow: rgb(var(--primary-yellow));
+  --color-primaryOrange: rgb(var(--primary-orange));
+  --color-primaryOrangeHover: rgb(var(--primary-orange-hover));
+  --color-primaryRed: rgb(var(--primary-red));
+  --color-primaryLightBlue: rgb(var(--primary-light-blue));
+
+  /* Additional Colors from Config */
+  --color-bags: rgb(62 154 0);
+  --color-aster: #f9d3a8;
+  --color-orca: #ffd15c;
+  
+  /* Platform Colors */
+  --color-pump: rgb(var(--primary-orange));
+  --color-virtualCurve: rgb(82 197 255);
+  
+  /* Hover States */
+  --color-hoverPrimary: rgb(var(--primary-stroke));
 }
 
 html {
@@ -141,21 +190,16 @@ body {
   .price-transition {
     transition: color 0.3s ease-in-out;
   }
+}
 
-  /* Force icon color for custom icon fonts */
-  .icon-green,
-  .icon-green::before {
-    color: #12AF80 !important;
-  }
-
-  /* Specific icon color overrides */
-  .icon-chef-hat,
-  .icon-chef-hat::before {
-    color: #12AF80 !important;
-  }
-
-  .icon-boxes,
-  .icon-boxes::before {
-    color: #12AF80 !important;
-  }
+/* Header tab hover effects */
+.hover\:\[transition\:background-color_135ms_ease-in-out\,color_135ms_ease-in-out\]:hover {
+  transition: background-color .135s ease-in-out, color .135s ease-in-out;
+}
+.hover\:text-primaryBlue:hover {
+  --tw-text-opacity: 1;
+  color: rgb(var(--primary-color) / var(--tw-text-opacity, 1));
+}
+.hover\:bg-primaryBlue\/20:hover {
+  background-color: rgb(var(--primary-color) / .2);
 }
