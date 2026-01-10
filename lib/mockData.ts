@@ -1,6 +1,40 @@
 import { TokenData } from "@/components/TokenCard";
 
-export const newPairsTokens: TokenData[] = [
+// Helper function to generate random token data
+const generateTokenData = (baseId: string, baseName: string, baseTicker: string, index: number): TokenData => {
+  const ages = ['1s', '2s', '3s', '5s', '7s', '10s', '15s', '20s', '30s', '1m', '2m', '5m'];
+  const marketCaps = ['$3.81K', '$6.14K', '$8.92K', '$12.5K', '$18.2K', '$24.1K', '$35.7K', '$42.3K', '$58.9K', '$67.4K'];
+  const volumes = ['$0', '$437', '$706', '$1.2K', '$2.3K', '$3.5K', '$4.8K', '$6.1K', '$8.2K', '$9.7K'];
+  const floors = ['0.017', '0.021', '0.023', '0.025', '0.028', '0.031', '0.035', '0.038', '0.042', '0.045'];
+  
+  return {
+    id: `${baseId}${index}`,
+    name: `${baseName} ${index}`,
+    ticker: `${baseTicker}${index}`,
+    age: ages[index % ages.length],
+    marketCap: marketCaps[index % marketCaps.length],
+    volume: volumes[index % volumes.length],
+    floor: floors[index % floors.length],
+    txCount: 2 + (index * 3) % 20,
+    progress: 5 + (index * 7) % 90,
+    holders: index % 15,
+    comments: index % 8,
+    bondingCurve: `${index % 50}/${100 + index * 10}`,
+    hasAudit: index % 3 === 0,
+    badges: index % 4 === 0 ? [{ type: "time", value: "23:59:55" }] : undefined,
+    stats: [
+      { icon: index % 2 === 0 ? "ri-fire-fill" : undefined, value: `${(index * 3) % 30}%`, color: index % 3 === 0 ? "green" : index % 3 === 1 ? "red" : "neutral" },
+      { icon: index % 4 === 0 ? "ri-arrow-up-line" : index % 4 === 1 ? "ri-arrow-down-line" : undefined, value: index % 5 === 0 ? "DS" : `${(index * 2) % 25}%`, color: index % 3 === 0 ? "green" : index % 3 === 1 ? "red" : "neutral" },
+      { value: index % 6 === 0 ? "ld" : `${index % 20}mo`, color: "neutral" },
+      { icon: index % 5 === 0 ? "ri-arrow-up-line" : undefined, value: `${(index * 4) % 35}%`, color: index % 4 === 0 ? "green" : index % 4 === 1 ? "red" : "neutral" },
+      { value: `${(index * 5) % 40}%`, color: "neutral" },
+    ],
+  };
+};
+
+export const newPairsTokens: TokenData[] = Array.from({ length: 30 }, (_, i) => 
+  generateTokenData(`NP${i}...`, 'Token', 'TK', i)
+).concat([
   {
     id: "6GZx...TS3V",
     name: "Meklo",
@@ -133,9 +167,11 @@ export const newPairsTokens: TokenData[] = [
       { value: "0%", color: "neutral" },
     ],
   },
-];
+]);
 
-export const finalStretchTokens: TokenData[] = [
+export const finalStretchTokens: TokenData[] = Array.from({ length: 30 }, (_, i) => 
+  generateTokenData(`FS${i}...`, 'FinalToken', 'FT', i)
+).concat([
   {
     id: "9aXv...7nNm",
     name: "Tesla AI",
@@ -271,9 +307,11 @@ export const finalStretchTokens: TokenData[] = [
       { icon: "ri-arrow-up-line", value: "46%", color: "green" },
     ],
   },
-];
+]);
 
-export const migratedTokens: TokenData[] = [
+export const migratedTokens: TokenData[] = Array.from({ length: 30 }, (_, i) => 
+  generateTokenData(`MG${i}...`, 'MigratedToken', 'MT', i)
+).concat([
   {
     id: "WoB5...FdZL",
     name: "SOL",
@@ -408,9 +446,11 @@ export const migratedTokens: TokenData[] = [
       { value: "0%", color: "neutral" },
     ],
   },
-];
+]);
 
-export const bnbNewPairsTokens: TokenData[] = [
+export const bnbNewPairsTokens: TokenData[] = Array.from({ length: 30 }, (_, i) => 
+  generateTokenData(`BNP${i}...`, 'BNBToken', 'BT', i)
+).concat([
   {
     id: "0x12...abcd",
     name: "BNB Cat",
@@ -543,9 +583,11 @@ export const bnbNewPairsTokens: TokenData[] = [
       { icon: "ri-arrow-up-line", value: "18%", color: "green" },
     ],
   },
-];
+]);
 
-export const bnbFinalStretchTokens: TokenData[] = [
+export const bnbFinalStretchTokens: TokenData[] = Array.from({ length: 30 }, (_, i) => 
+  generateTokenData(`BFS${i}...`, 'BNBFinalToken', 'BFT', i)
+).concat([
   {
     id: "0x78...mnop",
     name: "BNB Whale",
@@ -656,9 +698,11 @@ export const bnbFinalStretchTokens: TokenData[] = [
       { icon: "ri-arrow-up-line", value: "38%", color: "green" },
     ],
   },
-];
+]);
 
-export const bnbMigratedTokens: TokenData[] = [
+export const bnbMigratedTokens: TokenData[] = Array.from({ length: 30 }, (_, i) => 
+  generateTokenData(`BMG${i}...`, 'BNBMigratedToken', 'BMT', i)
+).concat([
   {
     id: "0x78...abcd",
     name: "BNB Panda",
@@ -791,4 +835,4 @@ export const bnbMigratedTokens: TokenData[] = [
       { icon: "ri-arrow-up-line", value: "80%", color: "green" },
     ],
   },
-];
+]);
