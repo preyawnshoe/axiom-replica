@@ -60,10 +60,18 @@ class WebSocketMock {
     
     this.isConnected = true;
     
-    // Simulate price updates every 1142ms-2142ms (50% slower than original 571ms-1071ms)
-    this.intervalId = setInterval(() => {
-      this.broadcastMultipleUpdates();
-    }, Math.random() * 1000 + 1142);
+    this.scheduleNextUpdate();
+  }
+
+  private scheduleNextUpdate() {
+    // Double the rate with increased randomness: 400ms-1000ms range
+    const delay = Math.random() * 600 + 400;
+    setTimeout(() => {
+      if (this.isConnected) {
+        this.broadcastMultipleUpdates();
+        this.scheduleNextUpdate();
+      }
+    }, delay);
   }
 
   disconnect() {
@@ -81,20 +89,21 @@ class WebSocketMock {
   }
 
   private broadcastMultipleUpdates() {
-    // Update 7-11 random tokens per broadcast
-    const numUpdates = Math.floor(Math.random() * 4) + 7;
+    // Update 5-20 random tokens per broadcast (increased randomness)
+    const numUpdates = Math.floor(Math.random() * 16) + 5;
     const shuffled = [...this.allTokenIds].sort(() => Math.random() - 0.5);
     const tokensToUpdate = shuffled.slice(0, numUpdates);
 
     tokensToUpdate.forEach(tokenId => {
-      const changePercent = (Math.random() * 14 - 7).toFixed(2);
+      // Increased price change range: -12% to +12%
+      const changePercent = (Math.random() * 24 - 12).toFixed(2);
       const isIncrease = parseFloat(changePercent) > 0;
       
       const update: PriceUpdate = {
         id: tokenId,
-        marketCap: this.generatePrice(3000, 50000),
-        volume: this.generatePrice(0, 10000),
-        floor: (Math.random() * 0.1 + 0.01).toFixed(3),
+        marketCap: this.generatePrice(2000, 80000),
+        volume: this.generatePrice(0, 20000),
+        floor: (Math.random() * 0.15 + 0.005).toFixed(3),
         change: isIncrease ? 'increase' : 'decrease',
         timestamp: Date.now(),
       };
