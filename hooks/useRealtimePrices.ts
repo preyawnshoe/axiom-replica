@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { websocketMock, PriceUpdate } from '@/lib/websocket-mock';
 
 export type PriceFlash = {
-  [key: string]: 'increase' | 'decrease' | null;
+  [key: string]: 'increase' | 'decrease' | 'neutral' | null;
 };
 
 export function useRealtimePrices(onUpdate?: (update: PriceUpdate) => void) {

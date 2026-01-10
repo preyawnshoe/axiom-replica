@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, startTransition } from "react";
 
 export type SortDirection = "asc" | "desc" | null;
 
@@ -9,6 +9,18 @@ export interface SortConfig<T> {
   direction: SortDirection;
 }
 
+/**
+ * useSorting Hook - Performance optimized sorting
+ * 
+ * Optimizations:
+ * - useMemo prevents unnecessary re-sorting
+ * - useCallback maintains referential equality for requestSort
+ * - startTransition marks sort updates as non-urgent for better UX
+ * 
+ * @param data - Array of items to sort
+ * @param initialKey - Initial sort key
+ * @returns Sorted data and sort request function
+ */
 export function useSorting<T>(data: T[], initialKey?: keyof T) {
   const [sortConfig, setSortConfig] = useState<SortConfig<T>>({
     key: initialKey || null,
@@ -52,19 +64,27 @@ export function useSorting<T>(data: T[], initialKey?: keyof T) {
     });
   }, [data, sortConfig]);
 
-  const requestSort = (key: keyof T) => {
-    let direction: SortDirection = 'asc';
-    
-    if (sortConfig.key === key) {
-      if (sortConfig.direction === 'asc') {
-        direction = 'desc';
-      } else if (sortConfig.direction === 'desc') {
-        direction = null;
-      }
-    }
+  /**
+   * Performance: useCallback prevents unnecessary re-renders of child components
+   * startTransition marks sort as non-urgent, keeping UI responsive
+   */
+  const requestSort = useCallback((key: keyof T) => {
+    startTransition(() => {
+      setSortConfig(prevConfig => {
+        let direction: SortDirection = 'asc';
+        
+        if (prevConfig.key === key) {
+          if (prevConfig.direction === 'asc') {
+            direction = 'desc';
+          } else if (prevConfig.direction === 'desc') {
+            direction = null;
+          }
+        }
 
-    setSortConfig({ key: direction ? key : null, direction });
-  };
+        return { key: direction ? key : null, direction };
+      });
+    });
+  }, []);
 
   return { sortedData, sortConfig, requestSort };
 }

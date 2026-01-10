@@ -148,7 +148,7 @@ export function BottomBar({ chain = 'sol' }: { chain?: 'sol' | 'bnb' }) {
         <div className="hidden 2xl:flex">
           <span className="contents">
             <button className="-mr-[8px] group flex items-center gap-[4px] h-[24px] px-2 text-[12px] font-medium rounded hover:bg-secondaryStroke/40 text-textTertiary transition-colors duration-150 ease-in-out" suppressHydrationWarning={true}>
-              <i className="icon-pill text-textTertiary group-hover:text-textSecondary transition-colors duration-150 ease-in-out" style={{ fontSize: "14px" }}></i>
+              <i className="ri-capsule-line text-textTertiary group-hover:text-textSecondary transition-colors duration-150 ease-in-out" style={{ fontSize: "14px" }}></i>
               <span className="text-textTertiary text-[12px] font-normal group-hover:text-textSecondary transition-colors duration-150 ease-in-out">$55.9K</span>
             </button>
           </span>

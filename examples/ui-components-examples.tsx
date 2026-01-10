@@ -10,7 +10,7 @@ import { Modal, ModalContent, ModalDescription, ModalHeader, ModalTitle, ModalTr
  */
 export function TooltipExample() {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0}>
       <Tooltip>
         <TooltipTrigger asChild>
           <button className="p-2 rounded hover:bg-primaryStroke/50">

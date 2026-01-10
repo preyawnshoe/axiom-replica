@@ -190,6 +190,28 @@ body {
   .price-transition {
     transition: color 0.3s ease-in-out;
   }
+
+  /* Performance optimization: GPU-accelerated transitions */
+  .hover-transform {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    will-change: transform;
+  }
+
+  .hover-transform:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Prevent layout shifts with explicit dimensions */
+  .token-image-container {
+    width: 74px;
+    height: 74px;
+    flex-shrink: 0;
+  }
+
+  /* Smooth color transitions for interactions */
+  .smooth-color {
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
 }
 
 /* Header tab hover effects */

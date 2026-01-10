@@ -17,7 +17,7 @@ interface EnhancedTokenCardProps {
 
 export function EnhancedTokenCard({ token, variant }: EnhancedTokenCardProps) {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0}>
       <div className="border-b border-primaryStroke/50 p-4 hover:bg-primaryStroke/50 transition-colors">
         <div className="flex items-center justify-between">
           {/* Token Info with Tooltip */}

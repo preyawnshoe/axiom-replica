@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Header } from "@/components/Header";
 import { Toolbar } from "@/components/Toolbar";
@@ -37,7 +37,10 @@ export default function Home() {
     }
   }, []);
 
-  // Handle real-time price updates
+  /**
+   * Handle real-time price updates with optimized state updates
+   * Performance: Uses functional updates to avoid unnecessary closures
+   */
   const handlePriceUpdate = useCallback((update: PriceUpdate) => {
     // Update newPairs tokens
     setNewPairs(prevTokens => {
@@ -152,7 +155,7 @@ export default function Home() {
               </div>
               <span className="contents">
                 <button type="button" className="-mr-[5px] group flex items-center justify-center w-8 h-8 bg-background hover:bg-primaryStroke/60 transition-colors relative rounded-full" suppressHydrationWarning={true}>
-                  <i className="icon-bookmark-x text-textSecondary group-hover:text-textPrimary" style={{ fontSize: '16px' }}></i>
+                  <i className="ri-bookmark-line text-textSecondary group-hover:text-textPrimary" style={{ fontSize: '16px' }}></i>
                 </button>
               </span>
               <span className="contents">

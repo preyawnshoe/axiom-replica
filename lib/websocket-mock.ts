@@ -34,10 +34,10 @@ class WebSocketMock {
     
     this.isConnected = true;
     
-    // Simulate price updates every 400ms-750ms for faster updates
+    // Simulate price updates every 571ms-1071ms
     this.intervalId = setInterval(() => {
       this.broadcastMultipleUpdates();
-    }, Math.random() * 350 + 400);
+    }, Math.random() * 500 + 571);
   }
 
   disconnect() {
@@ -55,13 +55,13 @@ class WebSocketMock {
   }
 
   private broadcastMultipleUpdates() {
-    // Update 10-15 random tokens per broadcast for high activity
-    const numUpdates = Math.floor(Math.random() * 6) + 10;
+    // Update 7-11 random tokens per broadcast
+    const numUpdates = Math.floor(Math.random() * 4) + 7;
     const shuffled = [...this.allTokenIds].sort(() => Math.random() - 0.5);
     const tokensToUpdate = shuffled.slice(0, numUpdates);
 
     tokensToUpdate.forEach(tokenId => {
-      const changePercent = (Math.random() * 20 - 10).toFixed(2);
+      const changePercent = (Math.random() * 14 - 7).toFixed(2);
       const isIncrease = parseFloat(changePercent) > 0;
       
       const update: PriceUpdate = {

@@ -1,23 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import { Modal, ModalContent, ModalTrigger } from "./ui/Modal";
 import { DisplaySettings } from "./DisplaySettings";
 
 export function Toolbar() {
+  const [isDisplaySettingsOpen, setIsDisplaySettingsOpen] = useState(false);
   return (
+    <>
     <div className="grayscale-[30%] hover:grayscale-0 transition-[filter] relative flex flex-row w-full h-[28px] gap-[8px] px-[12px] sm:px-[16px] pb-[1px] border-b border-primaryStroke sm:border-primaryStroke/50">
       {/* Settings button */}
       <div className="flex flex-row h-full items-center z-20 gap-[8px]">
-        <Modal>
-          <ModalTrigger asChild>
-            <button className="cursor-pointer min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]">
-              <i className="ri-settings-3-line text-[14px]"></i>
-            </button>
-          </ModalTrigger>
-          <ModalContent className="w-[344px] p-0">
-            <DisplaySettings />
-          </ModalContent>
-        </Modal>
+        <button 
+          onClick={() => setIsDisplaySettingsOpen(true)}
+          className="cursor-pointer min-w-[24px] min-h-[24px] flex items-center justify-center text-textTertiary hover:text-textSecondary hover:bg-primaryStroke/60 transition-colors duration-125 ease-in-out rounded-[4px]"
+        >
+          <i className="ri-settings-3-line text-[14px]"></i>
+        </button>
       </div>
 
       {/* Divider */}
@@ -51,5 +50,11 @@ export function Toolbar() {
         </div>
       </div>
     </div>
+
+    <DisplaySettings 
+      isOpen={isDisplaySettingsOpen} 
+      onClose={() => setIsDisplaySettingsOpen(false)} 
+    />
+    </>
   );
 }
