@@ -3,6 +3,10 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Header } from "@/components/Header";
+import { MobileHeader } from "@/components/MobileHeader";
+import { MobileTopHeader } from "@/components/MobileTopHeader";
+import { MobileNavBar } from "@/components/MobileNavBar";
+import { TabletLayout } from "@/components/TabletLayout";
 import { Toolbar } from "@/components/Toolbar";
 import { TokenColumn } from "@/components/TokenColumn";
 import { BottomBar } from "@/components/BottomBar";
@@ -14,6 +18,7 @@ import { PriceUpdate } from "@/lib/websocket-mock";
 
 export default function Home() {
   const [selectedChain, setSelectedChain] = useState<'sol' | 'bnb'>('sol');
+  const [activeTab, setActiveTab] = useState<'new-pairs' | 'final-stretch' | 'migrated'>('final-stretch');
   const [newPairs, setNewPairs] = useState<TokenData[]>(newPairsTokens);
   const [finalStretch, setFinalStretch] = useState<TokenData[]>(finalStretchTokens);
   const [migrated, setMigrated] = useState<TokenData[]>(migratedTokens);
@@ -99,11 +104,18 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-background">
-      {/* Header */}
-      <Header chain={selectedChain} onChainChange={setSelectedChain} />
+      {/* Mobile Top Header - Shows only on mobile */}
+      <MobileTopHeader chain={selectedChain} />
       
-      {/* Toolbar */}
-      <Toolbar />
+      {/* Header - Desktop only */}
+      <div className="hidden sm:block">
+        <Header chain={selectedChain} onChainChange={setSelectedChain} />
+      </div>
+      
+      {/* Toolbar - Desktop only */}
+      <div className="hidden sm:block">
+        <Toolbar />
+      </div>
 
       {/* Main content */}
       <div className="flex flex-1 min-h-0 overflow-auto">
@@ -111,8 +123,19 @@ export default function Home() {
         <audio></audio>
         <audio></audio>
         <div className="flex flex-col w-full h-full gap-[16px] py-[16px] px-[12px] sm:py-[24px] sm:px-[16px] lg:px-[24px] justify-start items-center overflow-hidden">
-          {/* Page header */}
-          <div className="flex-none flex flex-col sm:flex-row w-full gap-3 sm:gap-0 sm:h-[32px] justify-start items-start sm:items-center">
+          
+          {/* Mobile Header - Shows only on mobile */}
+          <div className="sm:hidden w-full">
+            <MobileHeader 
+              chain={selectedChain} 
+              onChainChange={setSelectedChain}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          </div>
+
+          {/* Page header - Desktop only */}
+          <div className="hidden sm:flex flex-none flex-col sm:flex-row w-full gap-3 sm:gap-0 sm:h-[32px] justify-start items-start sm:items-center">
             <div className="flex-1 flex items-center gap-3 mb-3 sm:mb-0">
               <span className="text-textPrimary text-[20px] font-medium">Pulse</span>
               <div className="flex items-center gap-1">
@@ -229,52 +252,107 @@ export default function Home() {
           {/* Three columns */}
           <div className="flex-1 border-primaryStroke border-[1px] flex flex-col md:flex-row w-full justify-start items-start rounded-[8px] sm:rounded-[4px] overflow-hidden" style={{ backgroundColor: '#101114' }}>
             <div className="flex flex-col md:flex-row w-full h-full rounded-[8px] sm:rounded-[4px] overflow-hidden" style={{ backgroundColor: '#101114' }}>
-              {displayOptions.showNewPairs && (
-                <TokenColumn 
-                  title="New Pairs" 
-                  tokens={newPairs} 
-                  variant="new" 
-                  count={0}
+              {/* Mobile: Show only active tab column */}
+              <div className="sm:hidden w-full h-full">
+                {activeTab === 'new-pairs' && displayOptions.showNewPairs && (
+                  <TokenColumn 
+                    title="New Pairs" 
+                    tokens={newPairs} 
+                    variant="new" 
+                    count={0}
+                    priceFlash={priceFlash}
+                    chain={selectedChain}
+                  />
+                )}
+                {activeTab === 'final-stretch' && displayOptions.showFinalStretch && (
+                  <TokenColumn 
+                    title="Final Stretch" 
+                    tokens={finalStretch} 
+                    variant="final" 
+                    count={0}
+                    priceFlash={priceFlash}
+                    chain={selectedChain}
+                  />
+                )}
+                {activeTab === 'migrated' && displayOptions.showMigrated && (
+                  <TokenColumn 
+                    title="Migrated" 
+                    tokens={migrated} 
+                    variant="migrated" 
+                    count={0}
+                    priceFlash={priceFlash}
+                    chain={selectedChain}
+                  />
+                )}
+              </div>
+              
+              {/* Tablet: Show single column with tabs (sm to lg) */}
+              <div className="hidden sm:flex lg:hidden w-full h-full">
+                <TabletLayout 
+                  newPairsTokens={newPairs}
+                  finalStretchTokens={finalStretch}
+                  migratedTokens={migrated}
                   priceFlash={priceFlash}
                   chain={selectedChain}
+                  activeTab={activeTab}
+                  onTabChange={setActiveTab}
                 />
-              )}
-              {displayOptions.showFinalStretch && (
-                <TokenColumn 
-                  title="Final Stretch" 
-                  tokens={finalStretch} 
-                  variant="final" 
-                  count={0}
-                  priceFlash={priceFlash}
-                  chain={selectedChain}
-                />
-              )}
-              {displayOptions.showMigrated && (
-                <TokenColumn 
-                  title="Migrated" 
-                  tokens={migrated} 
-                  variant="migrated" 
-                  count={0}
-                  priceFlash={priceFlash}
-                  chain={selectedChain}
-                />
-              )}
-              {!displayOptions.showNewPairs && !displayOptions.showFinalStretch && !displayOptions.showMigrated && (
-                <div className="flex-1 flex items-center justify-center p-8">
-                  <div className="text-center">
-                    <i className="ri-eye-off-line text-[48px] text-textTertiary mb-4"></i>
-                    <p className="text-textSecondary text-lg font-medium">No columns selected</p>
-                    <p className="text-textTertiary text-sm">Use the Display button to show token columns</p>
+              </div>
+              
+              {/* Desktop: Show all enabled columns (lg and up) */}
+              <div className="hidden lg:flex w-full h-full">
+                {displayOptions.showNewPairs && (
+                  <TokenColumn 
+                    title="New Pairs" 
+                    tokens={newPairs} 
+                    variant="new" 
+                    count={0}
+                    priceFlash={priceFlash}
+                    chain={selectedChain}
+                  />
+                )}
+                {displayOptions.showFinalStretch && (
+                  <TokenColumn 
+                    title="Final Stretch" 
+                    tokens={finalStretch} 
+                    variant="final" 
+                    count={0}
+                    priceFlash={priceFlash}
+                    chain={selectedChain}
+                  />
+                )}
+                {displayOptions.showMigrated && (
+                  <TokenColumn 
+                    title="Migrated" 
+                    tokens={migrated} 
+                    variant="migrated" 
+                    count={0}
+                    priceFlash={priceFlash}
+                    chain={selectedChain}
+                  />
+                )}
+                {!displayOptions.showNewPairs && !displayOptions.showFinalStretch && !displayOptions.showMigrated && (
+                  <div className="flex-1 flex items-center justify-center p-8">
+                    <div className="text-center">
+                      <i className="ri-eye-off-line text-[48px] text-textTertiary mb-4"></i>
+                      <p className="text-textSecondary text-lg font-medium">No columns selected</p>
+                      <p className="text-textTertiary text-sm">Use the Display button to show token columns</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <BottomBar chain={selectedChain} />
+      {/* Bottom bar - Desktop only */}
+      <div className="hidden sm:block">
+        <BottomBar chain={selectedChain} />
+      </div>
+      
+      {/* Mobile Navigation Bar - Mobile only */}
+      <MobileNavBar activeRoute="pulse" chain={selectedChain} />
       
       {/* Display Settings Modal */}
       <DisplaySettings 

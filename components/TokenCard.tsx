@@ -23,6 +23,7 @@ export interface TokenData {
   lastUpdated?: number;
   devSold?: boolean;
   devSoldPercent?: string;
+  platform?: 'raydium' | 'jupiter' | 'pump' | 'bags' | string;
   stats: {
     icon?: string;
     value: string;
@@ -36,6 +37,20 @@ export interface TokenData {
   }[];
   hasAudit?: boolean;
   buyAmount?: number;
+  proTraders?: number;
+  views?: number;
+  twitter?: string;
+  followers?: number;
+  tweetLink?: string;
+  communityLink?: string;
+  website?: string;
+  github?: string;
+  kolPercent?:number;
+  devPercent?: string;
+  sniperPercent?: number;
+  insiderPercent?: number;
+  bundlePercent?: number;
+  paid?: boolean;
 }
 
 interface TokenCardProps {
@@ -232,7 +247,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               type="button"
               className="flex flex-row gap-[4px] justify-center items-center rounded-[999px] h-[24px] whitespace-nowrap transition-all duration-0 relative overflow-hidden group/quickBuyButton"
               style={{ paddingLeft: 6, paddingRight: 6, backgroundColor: '#6683FF' }}
-              suppressHydrationWarning={true}
+             
             >
               <i className="ri-flashlight-fill text-[16px] flex items-center relative z-10 text-black"></i>
               <span className="text-[12px] font-bold relative z-10 text-black">0 {chain === 'sol' ? 'SOL' : 'BNB'}</span>
@@ -267,7 +282,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
                         {token.imageText || token.ticker.charAt(0)}
                       </div>
                     )}
-                    <button className="absolute inset-0 opacity-0 group-hover/image:opacity-100 transition-opacity duration-200 flex items-center justify-center" style={{ backgroundColor: 'rgba(82, 111, 255, 0.5)' }} suppressHydrationWarning={true}>
+                    <button className="absolute inset-0 opacity-0 group-hover/image:opacity-100 transition-opacity duration-200 flex items-center justify-center" style={{ backgroundColor: 'rgba(82, 111, 255, 0.5)' }}>
                       <i className="ri-camera-line text-white text-[24px]"></i>
                     </button>
                   </div>
@@ -289,7 +304,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
           {/* Address */}
           <span className="contents">
             <span className="text-textTertiary text-[12px] font-medium text-center max-w-[74px]">
-              <button type="button" className="text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] text-[12px] font-medium text-center max-w-[74px] flex items-center gap-[4px] group/copy" suppressHydrationWarning={true}>
+              <button type="button" className="text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] text-[12px] font-medium text-center max-w-[74px] flex items-center gap-[4px] group/copy">
                 <span>{token.id.slice(0, 4)}...{token.id.slice(-4)}</span>
               </button>
             </span>
@@ -309,7 +324,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
                     </div>
                     <div className="min-w-0 flex-1 overflow-hidden">
                       <span className="contents">
-                        <button type="button" className="flex flex-row gap-[4px] justify-start items-center text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] min-w-0 overflow-hidden" suppressHydrationWarning={true}>
+                        <button type="button" className="flex flex-row gap-[4px] justify-start items-center text-textTertiary hover:text-primaryBlueHover transition-colors duration-[125ms] min-w-0 overflow-hidden">
                           <div className="min-w-0 whitespace-nowrap overflow-hidden truncate text-inherit text-[16px] sm:text-[16px] lg:text-[14px] xl:text-[16px] text-left font-medium tracking-[-0.02em] xl:truncate xl:max-w-full block">
                             {token.name}
                           </div>
@@ -363,7 +378,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
                   <TooltipTrigger asChild>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <button className="flex items-center cursor-pointer" suppressHydrationWarning={true}>
+                        <button className="flex items-center cursor-pointer">
                           <i className="text-textSecondary ri-search-line text-[16px] hover:text-primaryBlueHover transition-colors duration-[125ms]"></i>
                         </button>
                       </PopoverTrigger>
@@ -504,6 +519,8 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               </span>
             </div>
           </div>
+          
+          {/* Badges for tablet and desktop xl+ */}
           <div className="hidden sm:flex md:hidden lg:hidden xl:flex flex-row w-full h-[24px] gap-[4px] justify-start items-end">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -537,7 +554,7 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               >
                 <div className="flex flex-col w-full h-full gap-[8px] justify-start items-center p-[8px] pb-[10px]">
                   <div className="flex flex-row justify-between w-full items-center gap-[4px]">
-                    <button className="group flex flex-row gap-[2px] justify-start items-center hover:bg-secondaryStroke/40 px-[4px] py-[2px] rounded-[4px] transition-all duration-150 ease-in-out flex-shrink-0" suppressHydrationWarning={true}>
+                    <button className="group flex flex-row gap-[2px] justify-start items-center hover:bg-secondaryStroke/40 px-[4px] py-[2px] rounded-[4px] transition-all duration-150 ease-in-out flex-shrink-0">
                       <span className="text-textTertiary group-hover:text-textSecondary text-[12px] leading-[16px] font-normal transition-all duration-150">Aae8FpM1Z5bD...5KNn</span>
                       <i className="ri-file-copy-line text-[12px] text-textTertiary group-hover:text-textSecondary transition-all duration-150"></i>
                     </button>
@@ -614,6 +631,133 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               </Tooltip>
             </span>
           </div>
+          
+          {/* Badges for tablet md-lg range (768px-1024px) */}
+          <div className="flex sm:hidden md:flex lg:flex xl:hidden flex-row w-full h-[24px] gap-[4px] px-[12px] justify-start items-end">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex flex-row gap-[4px] flex-shrink-0 h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer" style={{ backgroundColor: '#101114', borderColor: badge1Color.borderColor }}>
+                  <i className="ri-user-star-line text-[14px]" style={{ color: badge1Color.color }}></i>
+                  <span className="text-[12px] font-medium" style={{ color: badge1Color.color }}>{Math.abs(badge1)}%</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent variant="simple" side="bottom">Bubble Map</TooltipContent>
+            </Tooltip>
+            <Popover open={chefPopoverOpen} onOpenChange={setChefPopoverOpen}>
+              <PopoverTrigger asChild>
+                <div 
+                  className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer hover:bg-primaryStroke/30 transition-colors" 
+                  style={{ backgroundColor: '#101114', borderColor: badge2Color.borderColor }}
+                  onMouseEnter={() => setChefPopoverOpen(true)}
+                  onMouseLeave={() => setChefPopoverOpen(false)}
+                >
+                  <div className="w-[16px] h-[16px] flex items-center justify-center">
+                    <i className="ri-restaurant-2-fill text-[12px]" style={{ color: badge2Color.color }}></i>
+                  </div>
+                  <span className="text-[12px] font-medium" style={{ color: badge2Color.color }}>{Math.abs(badge2)}%</span>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent 
+                className="w-[280px] p-0 z-[100] rounded-lg shadow-xl" 
+                sideOffset={8}
+                onMouseEnter={() => setChefPopoverOpen(true)}
+                onMouseLeave={() => setChefPopoverOpen(false)}
+                style={{ backgroundColor: '#101114', borderColor: 'rgb(34, 36, 45)' }}
+              >
+                <div className="flex flex-col w-full h-full gap-[8px] justify-start items-center p-[8px] pb-[10px]">
+                  <div className="flex flex-row justify-between w-full items-center gap-[4px]">
+                    <button className="group flex flex-row gap-[2px] justify-start items-center hover:bg-secondaryStroke/40 px-[4px] py-[2px] rounded-[4px] transition-all duration-150 ease-in-out flex-shrink-0">
+                      <span className="text-textTertiary group-hover:text-textSecondary text-[12px] leading-[16px] font-normal transition-all duration-150">Aae8FpM1Z5bD...5KNn</span>
+                      <i className="ri-file-copy-line text-[12px] text-textTertiary group-hover:text-textSecondary transition-all duration-150"></i>
+                    </button>
+                  </div>
+                  <div className="flex flex-row w-full gap-[8px]">
+                    <div className="flex-1 border border-secondaryStroke/30 pt-[6px] pb-[7px] px-[8px] flex flex-col w-full justify-start items-center rounded-[4px] gap-[4px]">
+                      <div className="flex flex-row h-[18px] gap-[4px] flex-1 justify-start items-center">
+                        <i className="ri-wallet-line text-[14px] text-textSecondary"></i>
+                        <div className="flex flex-row items-center gap-[2px]">
+                          <img alt={chain === 'sol' ? "SOL" : "BNB"} loading="eager" width="14" height="14" className="w-[14px] h-[14px]" src={chain === 'sol' ? "/images/sol-fill.svg" : "/images/bnb-fill.svg"} />
+                          <span className="text-[14px] leading-[16px] font-normal text-textPrimary">753.1</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-row flex-1 justify-start items-center">
+                        <span className="text-textTertiary text-[12px] leading-[16px] font-normal">$102K</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 border border-secondaryStroke/30 pt-[6px] pb-[7px] px-[8px] flex flex-col w-full justify-start items-center rounded-[4px] gap-[4px]">
+                      <div className="flex flex-row h-[18px] gap-[4px] flex-1 justify-start items-center">
+                        <i className="ri-time-line text-[14px] text-textSecondary"></i>
+                        <span className="text-[14px] leading-[16px] font-normal text-textPrimary cursor-default">2h</span>
+                      </div>
+                      <div className="flex flex-row flex-1 justify-start items-center">
+                        <span className="text-textTertiary text-[12px] leading-[16px] font-normal">Funded</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full min-h-[1px] max-h-[1px] bg-secondaryStroke/50"></div>
+                  <div className="flex flex-row justify-between w-full gap-[8px]">
+                    <a href="https://solscan.io/tx/2oDc8QSQm6WivpWdBe26LxfV7xKjS5J3qp7cTpREehoqQBEzmvoGCjiUYTRTtthkRDPaZppCPTobrwceTA9XDH4W" target="_blank" rel="noopener noreferrer" className="group flex flex-row p-[4px] w-[24px] h-[24px] justify-center items-center hover:bg-secondaryStroke/40 cursor-pointer rounded-[4px] transition-all duration-150 ease-in-out">
+                      <i className="ri-share-box-line text-[14px] text-textSecondary group-hover:text-textPrimary transition-all duration-150"></i>
+                    </a>
+                    <a href="https://solscan.io/account/DgKaZ4Qi7rbUTWpGEfQn9dcDALDnrMYZbDFEDDqfnNwb" target="_blank" rel="noopener noreferrer" className="bg-secondaryStroke/35 hover:bg-secondaryStroke/50 flex flex-row justify-start items-center gap-[4px] pl-[4px] pr-[6px] py-[2px] rounded-full transition-all duration-150 ease-in-out cursor-pointer">
+                      <i className="ri-arrow-up-line text-[14px] text-textSecondary"></i>
+                      <span className="text-textSecondary text-[12px] leading-[16px] font-medium">DgKaZ4Qi7rbU...nNwb</span>
+                    </a>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <span className="contents">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer" style={{ backgroundColor: '#101114', borderColor: badge3Color.borderColor }}>
+                    <i className="ri-crosshair-2-line text-[14px]" style={{ color: badge3Color.color }}></i>
+                    <span className="text-[12px] font-medium" style={{ color: badge3Color.color }}>{Math.abs(badge3)}%</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent variant="simple" side="bottom">Snipers Holding</TooltipContent>
+              </Tooltip>
+            </span>
+            <span className="contents">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer" style={{ backgroundColor: '#101114', borderColor: badge4Color.borderColor }}>
+                    <i className="ri-ghost-line text-[14px]" style={{ color: badge4Color.color }}></i>
+                    <span className="text-[12px] font-medium" style={{ color: badge4Color.color }}>{Math.abs(badge4)}%</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent variant="simple" side="bottom">Suspicious Activity</TooltipContent>
+              </Tooltip>
+            </span>
+            <span className="contents">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer" style={{ backgroundColor: '#101114', borderColor: badge5Color.borderColor }}>
+                    <div className="flex justify-center items-center min-w-[14px] min-h-[14px] max-w-[14px] max-h-[14px]">
+                      <i className="ri-stack-fill text-[12px]" style={{ color: badge5Color.color }}></i>
+                    </div>
+                    <span className="text-[12px] font-medium" style={{ color: badge5Color.color }}>{Math.abs(badge5)}%</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent variant="simple" side="bottom">Concentration</TooltipContent>
+              </Tooltip>
+            </span>
+            {token.paid && (
+              <div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full bg-backgroundSecondary border-primaryStroke/50 border-[1px] cursor-pointer">
+                      <div className="flex justify-center items-center min-w-[14px] min-h-[14px] max-w-[14px] max-h-[14px]">
+                        <i className="text-[14px] text-increase" style={{ fontSize: '12px' }}>💰</i>
+                      </div>
+                      <span className="text-primaryGreen text-[12px] font-medium">Paid</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent variant="simple" side="bottom">Paid Promotion</TooltipContent>
+                </Tooltip>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -637,3 +781,4 @@ export const TokenCard = memo(TokenCardComponent, (prevProps, nextProps) => {
     prevProps.chain === nextProps.chain
   );
 });
+

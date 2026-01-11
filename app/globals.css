@@ -39,6 +39,10 @@
   --primary-orange-hover: 238 146 103;
   --primary-red: 242 84 97;
   --primary-light-blue: 82 197 255;
+  
+  /* Platform Colors */
+  --pump: 64 190 217;
+  --bags: 144 116 233;
 }
 
 @theme inline {
@@ -84,13 +88,13 @@
   --color-primaryRed: rgb(var(--primary-red));
   --color-primaryLightBlue: rgb(var(--primary-light-blue));
 
+  /* Platform Colors */
+  --color-pump: rgb(var(--pump));
+  --color-bags: rgb(var(--bags));
+
   /* Additional Colors from Config */
-  --color-bags: rgb(62 154 0);
   --color-aster: #f9d3a8;
   --color-orca: #ffd15c;
-  
-  /* Platform Colors */
-  --color-pump: rgb(var(--primary-orange));
   --color-virtualCurve: rgb(82 197 255);
   
   /* Hover States */
@@ -105,6 +109,8 @@ body {
   background: var(--background);
   color: rgb(var(--text-primary));
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  min-width: 320px;
+  overflow-x: auto;
 }
 
 /* Default border color across the app */
@@ -224,4 +230,58 @@ body {
 }
 .hover\:bg-primaryBlue\/20:hover {
   background-color: rgb(var(--primary-color) / .2);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 640px) {
+  /* Mobile navigation */
+  .mobile-navbar {
+    border-top: 1px solid rgb(var(--primary-stroke));
+    backdrop-filter: blur(8px);
+    background-color: rgba(6, 7, 11, 0.95);
+  }
+  
+  /* iOS safe area fix */
+  .ios-h-fix {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Prevent overscroll on mobile */
+  body {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile content spacing */
+  .h-screen-safe {
+    height: 100vh;
+    height: calc(100vh - env(safe-area-inset-bottom));
+  }
+  
+  /* iOS safe area fix for bottom navigation */
+  .ios-h-fix {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Touch-friendly button sizing */
+  .mobile-navbar button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  /* Prevent text selection on mobile interactive elements */
+  .mobile-navbar button,
+  .mobile-navbar a {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Adjust spacing for tablet */
+  .token-column {
+    min-width: 280px;
+  }
 }

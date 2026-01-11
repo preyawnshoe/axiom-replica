@@ -8,7 +8,7 @@ export function Toolbar() {
   const [isDisplaySettingsOpen, setIsDisplaySettingsOpen] = useState(false);
   return (
     <>
-    <div className="grayscale-[30%] hover:grayscale-0 transition-[filter] relative flex flex-row w-full h-[28px] gap-[8px] px-[12px] sm:px-[16px] pb-[1px] border-b border-primaryStroke sm:border-primaryStroke/50">
+    <div className="hidden sm:flex grayscale-[30%] hover:grayscale-0 transition-[filter] relative flex-row w-full h-[28px] gap-[8px] px-[12px] sm:px-[16px] pb-[1px] border-b border-primaryStroke sm:border-primaryStroke/50">
       {/* Settings button */}
       <div className="flex flex-row h-full items-center z-20 gap-[8px]">
         <button 

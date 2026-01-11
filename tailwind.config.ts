@@ -54,13 +54,13 @@ const config: Config = {
         primaryRed: "rgb(var(--primary-red) / <alpha-value>)",
         primaryLightBlue: "rgb(var(--primary-light-blue) / <alpha-value>)",
         
-        // Additional Colors from CSS
-        bags: "rgb(62 154 0 / <alpha-value>)",
+        // Platform Colors
+        pump: "rgb(var(--pump) / <alpha-value>)",
+        bags: "rgb(var(--bags) / <alpha-value>)",
+        
+        // Additional Colors
         aster: "#f9d3a8",
         orca: "#ffd15c",
-        
-        // Platform Colors
-        pump: "rgb(var(--primary-orange) / <alpha-value>)",
         virtualCurve: "rgb(82 197 255 / <alpha-value>)",
         
         // Hover States
