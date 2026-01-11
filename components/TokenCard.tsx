@@ -69,7 +69,8 @@ interface TokenCardProps {
  * - Image dimensions are explicit (74x74) to prevent layout shifts
  */
 const TokenCardComponent = ({ token, variant = "new", flashState = null, chain = 'sol' }: TokenCardProps) => {
-  const [chefPopoverOpen, setChefPopoverOpen] = useState(false);
+  const [chefPopoverOpenXL, setChefPopoverOpenXL] = useState(false);
+  const [chefPopoverOpenMD, setChefPopoverOpenMD] = useState(false);
 
   // List of available images from public/images/
   const availableImages = [
@@ -531,13 +532,14 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               </TooltipTrigger>
               <TooltipContent variant="simple" side="bottom">Bubble Map</TooltipContent>
             </Tooltip>
-            <Popover open={chefPopoverOpen} onOpenChange={setChefPopoverOpen}>
+            <Popover open={chefPopoverOpenXL} onOpenChange={setChefPopoverOpenXL}>
               <PopoverTrigger asChild>
                 <div 
                   className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer hover:bg-primaryStroke/30 transition-colors" 
                   style={{ backgroundColor: '#101114', borderColor: badge2Color.borderColor }}
-                  onMouseEnter={() => setChefPopoverOpen(true)}
-                  onMouseLeave={() => setChefPopoverOpen(false)}
+                  onMouseEnter={() => setChefPopoverOpenXL(true)}
+                  onMouseLeave={() => setChefPopoverOpenXL(false)}
+                  onClick={(e) => e.preventDefault()}
                 >
                   <div className="w-[16px] h-[16px] flex items-center justify-center">
                     <i className="ri-restaurant-2-fill text-[12px]" style={{ color: badge2Color.color }}></i>
@@ -548,8 +550,9 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               <PopoverContent 
                 className="w-[280px] p-0 z-[100] rounded-lg shadow-xl" 
                 sideOffset={8}
-                onMouseEnter={() => setChefPopoverOpen(true)}
-                onMouseLeave={() => setChefPopoverOpen(false)}
+                onMouseEnter={() => setChefPopoverOpenXL(true)}
+                onMouseLeave={() => setChefPopoverOpenXL(false)}
+                onOpenAutoFocus={(e) => e.preventDefault()}
                 style={{ backgroundColor: '#101114', borderColor: 'rgb(34, 36, 45)' }}
               >
                 <div className="flex flex-col w-full h-full gap-[8px] justify-start items-center p-[8px] pb-[10px]">
@@ -643,13 +646,14 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               </TooltipTrigger>
               <TooltipContent variant="simple" side="bottom">Bubble Map</TooltipContent>
             </Tooltip>
-            <Popover open={chefPopoverOpen} onOpenChange={setChefPopoverOpen}>
+            <Popover open={chefPopoverOpenMD} onOpenChange={setChefPopoverOpenMD}>
               <PopoverTrigger asChild>
                 <div 
                   className="flex flex-row gap-[4px] flex-shrink-0 w-fit h-[24px] px-[5px] justify-start items-center rounded-full border-[1px] cursor-pointer hover:bg-primaryStroke/30 transition-colors" 
                   style={{ backgroundColor: '#101114', borderColor: badge2Color.borderColor }}
-                  onMouseEnter={() => setChefPopoverOpen(true)}
-                  onMouseLeave={() => setChefPopoverOpen(false)}
+                  onMouseEnter={() => setChefPopoverOpenMD(true)}
+                  onMouseLeave={() => setChefPopoverOpenMD(false)}
+                  onClick={(e) => e.preventDefault()}
                 >
                   <div className="w-[16px] h-[16px] flex items-center justify-center">
                     <i className="ri-restaurant-2-fill text-[12px]" style={{ color: badge2Color.color }}></i>
@@ -660,8 +664,9 @@ const TokenCardComponent = ({ token, variant = "new", flashState = null, chain =
               <PopoverContent 
                 className="w-[280px] p-0 z-[100] rounded-lg shadow-xl" 
                 sideOffset={8}
-                onMouseEnter={() => setChefPopoverOpen(true)}
-                onMouseLeave={() => setChefPopoverOpen(false)}
+                onMouseEnter={() => setChefPopoverOpenMD(true)}
+                onMouseLeave={() => setChefPopoverOpenMD(false)}
+                onOpenAutoFocus={(e) => e.preventDefault()}
                 style={{ backgroundColor: '#101114', borderColor: 'rgb(34, 36, 45)' }}
               >
                 <div className="flex flex-col w-full h-full gap-[8px] justify-start items-center p-[8px] pb-[10px]">
